@@ -1,77 +1,76 @@
 (function(){
 	// let age = 25;
 	// let name = 'hoanganh';
-	let parseKeyword = function(keyword){
-		// if(keyword){
-		// 	return `hello ${name}, you're ${age}`;
-		// }
-		let words = keyword.split('||');
-		//remove empty string ''
-		words = words.filter(word => word);
+	let _parseKeyword = function(keyword){
+		/**
+		 * 1. break through ||
+		 * split
+		 * remove empty string ''
+		 */
+		let expressions = keyword.split('||').filter(notEmpty => notEmpty);
+
+		/**
+		 * 2. expression is KEYWORD*
+		 */
 		let wordsStartWith =
-			words.filter(word => word.endsWith('*'))
-			     .map((word, index)=>{
-				     //remove * indicate startWith
-				     word = word.replace('*', '');
-				     //concat these word together by ||
-				     word = `|${word}`;
-				     if(index == 0)
-					     word = word.replace('|', '');
+			expressions
+				.filter(expression => expression.endsWith('*'))
+				.map(word => `${word.replace('*', '')}`)
+				.join('|');
+		if(wordsStartWith != '')
+			wordsStartWith = `^(${wordsStartWith})`;
 
-				     return word;
-			     })
-			     .join('');
-		//startWith regex: ^
-		//result should be ^(\bhello\b||\bhi\b)
-		wordsStartWith = `^(${wordsStartWith})`;
-
-
+		/**
+		 * 3. expression is *KEYWORD
+		 */
 		let wordsEndWith =
-			words.filter(word => word.startsWith('*'))
-				.map((word, index) => {
-					//remove * indicate endWith
-					word = word.replace('*', '');
-					//concat these word together by |
-					word = `|${word}`;
-					if(index == 0)
-						word = word.replace('|', '');
+			expressions
+				.filter(expression => expression.startsWith('*'))
+				.map(word => `${word.replace('*', '')}|`)
+				.join('')
+				.slice(0, -1);
+		if(wordsEndWith != '')
+			wordsEndWith = `(${wordsEndWith})$`;
 
-					return word;
-				})
-				.join('');
-		//endWith regex: $
-		//result should be (hello|hi)$
-		wordsEndWith = `(${wordsEndWith})$`;
-
-		let test =
-			words.filter(word => !word.includes('*'));
-		console.log(test);
-
+		/**
+		 * 5. expression is KEYWORD
+		 */
 		let wordsKeyword =
-			words.filter(word => !word.includes('*'))
-			     .map((word, index) => {
-				     //remove * indicate endWith
-				     // word = word.replace('*', '');
-				     //concat these word together by |
-				     //for keyword, BOUND them as exactly
-				     word = `|\\b${word}\\b`;
-				     if(index == 0)
-					     word = word.replace('|', '');
+			expressions
+				.filter(expression => !expression.includes('*') && !expression.includes('&'))
+				.map(word => `\\b${word}\\b`)
+				.join('|');
 
-				     return word;
-			     })
-			     .join('');
+		/**
+		 * 4. expression is & AND
+		 */
+		let andExpressions =
+			expressions
+				.filter(expression => expression.includes('&'))
+				.map(ex => {
+					let words = ex.split('&').filter(notEmpty => notEmpty);
+					let tmp = words.map(word => `(?=.*${_parseKeyword(word)})`).join('');
+					return tmp;
+				})
+				.filter(notEmpty => notEmpty)
+				.join('|');
 
+		let phpPattern = [wordsStartWith, wordsEndWith, wordsKeyword, andExpressions];
+		phpPattern = phpPattern.filter(notEmpty => notEmpty).join('|');
 
-		// return keyword;
-		// return `/${wordsStartWith}/`;
-		return `/${wordsKeyword}/`;
+		return phpPattern;
 	};
+
+	let parseKeyword = function(keyword){
+		let phpPattern = _parseKeyword(keyword);
+
+		return `/${phpPattern}/`;
+	}
 
 	window.parseKeyword = parseKeyword;
 })();
 
-let test1 = ['hello*||hi*||hey*||yo*||*bye', 'bye*', 'I like*', '*?', 'hello&anh&'];
+let test1 = ['hello*||hi*||hey*||yo*||*bye||', 'bye*&', '||I like*&', 'hello&anh&', '', '*?'];
 
 test1.forEach(test=>{
 	console.log(parseKeyword(test));
