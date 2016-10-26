@@ -15,48 +15,28 @@
                         </select>
                     </div>
 
-
                     <div class="form-group">
                         <h4>Conversation</h4>
                         <div id="conversation" class="form-control">
-                            <div class="row">
-                                <div class="col-md-6  col-md-push-6">
+                            <div class="row message">
+                                <div class="col-md-8  col-md-push-4">
                                     <div class="pull-right">
-                                        <button class="btn btn-success">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                        <button class="btn">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row message">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div class="pull-left">
-                                        <button class="btn btn-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6  col-md-push-6">
-                                    <div class="pull-right">
-                                        <button class="btn btn-success">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row message">
-                                <div class="col-md-6">
-                                    <div class="pull-left">
-                                        <button class="btn btn-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                        <button class="btn">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
 
                     <div class="form-group">
                         <div class="input-group">
@@ -88,8 +68,7 @@
         }
 
         .message{
-            position: relative;
-            top: -20px;
+            margin-bottom: 10px;
         }
     </style>
 @endsection
@@ -100,11 +79,20 @@
         let userReplyInput = $('input[name="user_reply"]');
         let selectChatbox = $('select[name="chatbox_name"]');
         let conversationDiv = $('#conversation');
+
+        let userReplyTemplate = $('<div class="row message">\n<div class="col-md-8  col-md-push-4">\n<div class="pull-right">\n<button class="btn"><\/button>\n<\/div>\n<\/div>\n<\/div>');
+        let chatboxReplyTemplate = $('<div class="row message">\n<div class="col-md-8">\n<div class="pull-left">\n<button class="btn"><\/button>\n<\/div>\n<\/div>\n<\/div>');
+//        console.log(userReplyTemplate);
+//        console.log(chatboxReplyTemplate);
+
         btnSendMsg.on('click', function(){
             let user_reply = userReplyInput.val();
             let chatbox_name = selectChatbox.val();
 
             //append to conversationDiv
+            let userReplyTmp = userReplyTemplate.clone();
+            userReplyTmp.find('button').text(user_reply);
+            conversationDiv.append(userReplyTmp);
 
             $.post({
                 url: '{{ url("script") }}',
@@ -112,8 +100,11 @@
                     user_reply,
                     chatbox_name
                 },
-                sucess(res){
+                success(res){
                     console.log(res);
+                    let chatboxReply = chatboxReplyTemplate.clone();
+                    chatboxReply.find('button').text(res['answer']);
+                    conversationDiv.append(chatboxReply);
                 },
                 error(res){
                     console.log(res);

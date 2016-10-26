@@ -63,8 +63,14 @@
 
 	let parseKeyword = function(keyword){
 		let phpPattern = _parseKeyword(keyword);
+		//bcs ? is specical character
+		//add \
+		phpPattern = phpPattern.replace('?', '\\?');
+		if(!phpPattern)
+			phpPattern = '\'\'';
 
-		return `/${phpPattern}/`;
+		console.log(phpPattern);
+		return `/${phpPattern}/i`;
 	}
 
 	window.parseKeyword = parseKeyword;

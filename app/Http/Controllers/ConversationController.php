@@ -16,9 +16,9 @@ class ConversationController extends Controller
 
         if($req->method() == 'POST'){
             $chatboxName = $req->get('chatbox_name');
-            $content = $conversations->where('name', $chatboxName);
+            $conversation = $conversations->where('name', $chatboxName)->first();
 
-            $conversation = json_decode($content, true);
+            $conversation = json_decode($conversation->content, true);
             $conversation = collect($conversation);
 
             //query on $conversation, get out ANSWER
@@ -28,11 +28,18 @@ class ConversationController extends Controller
 
                 return preg_match($pattern, $userReply);
             });
+            //only get the values, store as array, filter make HOLE in array
+            //array like object 2=>'asdfasd', 4=>'asdfasdf', bcs 0,1,3 gone
+            $answers = $answers->values();
 
             //only get the higher response
-            $answer = $answers->count() > 0 ? $answers[0] : 'sorry, i don\'t mis what you mean';
+            $resX = random_int(1, 3);
+            $responseX = "Response {$resX}";
+            $answer = $answers->count() > 0 ? $answers[0][$responseX] : 'sorry, i mis what you mean';
 
-            return compact('userReply', 'answer');
+//            return compact('userReply', 'answer');
+//            return response(compact('userReply', 'answer'), 200, ['Content-Type' => 'application/json']);
+            return response(['answer' => $answer], 200, ['Content-Type' => 'application/json']);
         }
     }
 }

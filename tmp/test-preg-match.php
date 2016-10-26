@@ -104,7 +104,15 @@ foreach ($strs as $str) {
 //		echo "pattern not in {$str}\n";
 //	}
 
-	$pattern = "//";
+	// $pattern = "/''/";
+	// echo "try pattern: ";
+	// if(preg_match($pattern, $str)){
+	// 	echo "pattern in {$str}\n";
+	// }else{
+	// 	echo "pattern not in {$str}\n";
+	// }
+
+	$pattern = "/(\?)$/";
 	echo "try pattern: ";
 	if(preg_match($pattern, $str)){
 		echo "pattern in {$str}\n";
