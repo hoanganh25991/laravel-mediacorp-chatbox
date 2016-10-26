@@ -21,3 +21,5 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('excel/load', 'ExcelController@load');
 Route::post('excel/load', 'ExcelController@load');
+
+Route::get('script', 'ConversationController@script');

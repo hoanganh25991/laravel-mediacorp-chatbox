@@ -6,12 +6,14 @@
         <div class="panel-body">
             <form action="" method="POST" id="loadChatbox" enctype="multipart/form-data">
                 <input type="hidden" name="excel_parsed">
+
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-addon">Excel-file</span>
                         <input type="file" name="excel_file" class="form-control">
                     </div>
                 </div>
+
                 <pre id="wbJsonPre"></pre>
 
                 <button id="btnLoad" class="btn btn-info">Load</button>
