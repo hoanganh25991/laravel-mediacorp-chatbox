@@ -17,7 +17,7 @@
 				.filter(expression => expression.endsWith('*'))
 				.map(word => `${word.replace('*', '')}`)
 				.join('|');
-		if(wordsStartWith != '')
+		if(wordsStartWith)
 			wordsStartWith = `^(${wordsStartWith})`;
 
 		/**
@@ -29,7 +29,7 @@
 				.map(word => `${word.replace('*', '')}|`)
 				.join('')
 				.slice(0, -1);
-		if(wordsEndWith != '')
+		if(wordsEndWith)
 			wordsEndWith = `(${wordsEndWith})$`;
 
 		/**
@@ -70,10 +70,16 @@
 	window.parseKeyword = parseKeyword;
 })();
 
-let test1 = ['hello*||hi*||hey*||yo*||*bye||', 'bye*&', '||I like*&', 'hello&anh&', '', '*?'];
+let test1 = ['hello*||hi*||hey*||yo*||*bye||', 'bye*&', '||I like*&', 'hello&anh&', '', '*?', 'hoanganh'];
 
+let test2 = ['hello*||hi*||hey*||yo*||', 'bye*', 'I like*', '*?'];
+
+console.log('run test 1');
 test1.forEach(test=>{
 	console.log(parseKeyword(test));
 });
 
-console.log(parseKeyword('hoanganh'));
+console.log('run test 2');
+test2.forEach(test=>{
+	console.log(parseKeyword(test));
+});

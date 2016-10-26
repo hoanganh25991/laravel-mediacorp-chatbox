@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Conversation;
 
 class ExcelController extends Controller
 {
@@ -13,15 +14,29 @@ class ExcelController extends Controller
 
 
         if($req->file('excel_file')->isValid()){
+            //store upload file
             $excelFile = $req->file('excel_file');
-
-//            $fileName = $req->get('file_name');
-//            $fileName = $excelFile->_originalName;
             $fileName = $excelFile->getClientOriginalName();
-//            dd($excelFile);
-            $path = $excelFile->storeAs('definition', $fileName);
+            $uploadedFilePath = $excelFile->storeAs('definition', $fileName);
 
-            return $path;
+            //excel_parsed
+            $excelParsed = $req->get('excel_parsed');
+
+            //save excelParsed to database
+            $conversation = Conversation::where('name', $fileName)->first();
+            if(!$conversation)
+                $conversation = new Conversation();
+
+            $conversation->fill([
+                'name' => $fileName,
+                'content' => $excelParsed
+            ]);
+
+            $conversation->save();
+
+//            $excelParsed = json_decode($excelParsed, true);
+
+            return compact('excelParsed', 'uploadedFilePath');
         }
     }
 }

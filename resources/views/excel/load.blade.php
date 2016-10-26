@@ -2,23 +2,27 @@
 
 @section('content')
     <div class="panel panel-default">
-        <h1 class="panel-heading">Load rooms from excel-file</h1>
+        <h1 class="panel-heading">Load excel file</h1>
         <div class="panel-body">
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">Excel-file</span>
-
-                </div>
-            </div>
-            <p id="wbJsonPre"></p>
             <form action="" method="POST" id="loadChatbox" enctype="multipart/form-data">
-                <input type="hidden" name="rooms">
-                <input type="hidden" name="file_name">
-                <input type="file" name="excel_file" class="form-control">
+                <input type="hidden" name="excel_parsed">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">Excel-file</span>
+                        <input type="file" name="excel_file" class="form-control">
+                    </div>
+                </div>
+                <pre id="wbJsonPre"></pre>
+
                 <button id="btnLoad" class="btn btn-info">Load</button>
             </form>
         </div>
     </div>
+    <style>
+        #wbJsonPre{
+            white-space: normal;
+        }
+    </style>
 @endsection
 
 @section('my_script')
@@ -31,27 +35,29 @@
         /**
          * Created by hoanganh25991 on 29/09/16.
          */
-        {{--let html = '<p><a href="#download" id="download">Download<a> sample <strong>excel-file</strong></p>';--}}
-        {{--let flashDiv = $('.alert');--}}
-        {{--flashDiv.html(html);--}}
-        {{--flashDiv.attr('class', 'alert alert-info');--}}
+        let html = '<p><a href="#download" id="download">Download<a> sample <strong>excel-file</strong></p>';
+        let flashDiv = $('.alert');
+        flashDiv.html(html);
+        flashDiv.attr('class', 'alert alert-info');
 
-        {{--let downloadBtn = $('#download');--}}
-        {{--downloadBtn.on('click', function(e){--}}
-            {{--e.preventDefault();--}}
-            {{--console.log('click');--}}
-            {{--let url = "{{ url('load-file?file_name=rooms.xlsx') }}";--}}
-            {{--let win = window.open(url, '_blank');--}}
-            {{--win.focus();--}}
-        {{--});--}}
+        let downloadBtn = $('#download');
+        downloadBtn.on('click', function(e){
+            e.preventDefault();
+            console.log('click');
+            let url = "{{ url('load-file?file_name=rooms.xlsx') }}";
+            let win = window.open(url, '_blank');
+            win.focus();
+        });
 
         let excel_file = $('input[name="excel_file"]');
 
-        let roomsInput = $('input[name="rooms"]');
+        let excelParsed = $('input[name="excel_parsed"]');
 
         let filenameInput = $('input[name="file_name"]');
 
         let form = $('form#loadChatbox');
+
+        console.log(excel_file);
 
         excel_file.on('change', handleFile);
 
@@ -74,27 +80,27 @@
                     //PARSE IT into php preg_match
                     let keyword = val['Keyword'];
                     let pattern = parseKeyword(keyword);
-//                    console.log(pattern);
+                    val['Keyword'] = pattern;
                 })
                 ;
                 // console.log(wbJson);
                 let wbJsonPre = $('#wbJsonPre');
                 let wbJsonStr = JSON.stringify(wbJson);
-                wbJsonPre.html(`<pre>${wbJsonStr}</pre>`);
-                roomsInput.val(wbJsonStr);
+//                wbJsonPre.html(`<pre>${wbJsonStr}</pre>`);
+                wbJsonPre.text(wbJsonStr);
+                excelParsed.val(wbJsonStr);
             }
         };
         let btnLoad = $('#btnLoad');
         btnLoad.on('click', function(e){
             e.preventDefault();
-            let roomsJson = roomsInput.val();
-//            console.log(roomsJson);
+            let excelParsedJson = excelParsed.val();
 
-            if(!roomsJson.trim()){
+            if(!excelParsedJson.trim()){
                 flash(`Please upload <strong>excel-file</strong> first`, 'warning');
                 return;
             }
-//            console.log(roomsJson);
+//            console.log(excelParsedJson);
             form.submit();
         });
 //        let reloadCheckbox = $('input[name="reload"]');
