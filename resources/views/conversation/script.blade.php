@@ -81,11 +81,20 @@
         let conversationDiv = $('#conversation');
 
         let userReplyTemplate = $('<div class="row message">\n<div class="col-md-8  col-md-push-4">\n<div class="pull-right">\n<button class="btn"><\/button>\n<\/div>\n<\/div>\n<\/div>');
-        let chatboxReplyTemplate = $('<div class="row message">\n<div class="col-md-8">\n<div class="pull-left">\n<button class="btn"><\/button>\n<\/div>\n<\/div>\n<\/div>');
+        let chatboxReplyTemplate = $('<div class="row message">\n<div class="col-md-8">\n<div class="pull-left">\n<button class="btn"><img src="{{ url('images/icon_status.gif') }}"><\/button>\n<\/div>\n<\/div>\n<\/div>');
 //        console.log(userReplyTemplate);
 //        console.log(chatboxReplyTemplate);
 
-        btnSendMsg.on('click', function(){
+        let audio = new Audio('{{ url("sounds/all-eyes-on-me.mp3") }}');
+
+        btnSendMsg.on('click', handleMessage);
+        $(document).keypress(function(e) {
+            if(e.which == 13) {
+                handleMessage();
+            }
+            console.log('press key');
+        });
+        function handleMessage(){
             let user_reply = userReplyInput.val();
             let chatbox_name = selectChatbox.val();
 
@@ -93,6 +102,13 @@
             let userReplyTmp = userReplyTemplate.clone();
             userReplyTmp.find('button').text(user_reply);
             conversationDiv.append(userReplyTmp);
+            //clear input text
+            userReplyInput.val('');
+
+            let chatboxReply = chatboxReplyTemplate.clone();
+            conversationDiv.append(chatboxReply);
+
+            conversationDiv.scrollTop(conversationDiv.height());
 
             $.post({
                 url: '{{ url("script") }}',
@@ -102,14 +118,14 @@
                 },
                 success(res){
                     console.log(res);
-                    let chatboxReply = chatboxReplyTemplate.clone();
                     chatboxReply.find('button').text(res['answer']);
-                    conversationDiv.append(chatboxReply);
+                    audio.play();
+//                    conversationDiv.append(chatboxReply);
                 },
                 error(res){
                     console.log(res);
                 }
             });
-        });
+        }
     </script>
 @endsection

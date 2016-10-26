@@ -36,6 +36,9 @@ class ConversationController extends Controller
             $resX = random_int(1, 3);
             $responseX = "Response {$resX}";
             $answer = $answers->count() > 0 ? $answers[0][$responseX] : 'sorry, i mis what you mean';
+            //some answer return as -
+            //what the HECK @@, give back the 'Response 1'
+            $answer = ($answer != '-') ? $answer : $answers[0]['Response 1'];
 
 //            return compact('userReply', 'answer');
 //            return response(compact('userReply', 'answer'), 200, ['Content-Type' => 'application/json']);
