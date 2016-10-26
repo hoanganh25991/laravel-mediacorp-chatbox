@@ -34,7 +34,8 @@ class ExcelController extends Controller
 
             $conversation->save();
 
-//            $excelParsed = json_decode($excelParsed, true);
+            //just for pretty notification
+            $excelParsed = json_decode($excelParsed, true);
 
             return compact('excelParsed', 'uploadedFilePath');
         }
