@@ -34,12 +34,19 @@ foreach ($strs as $str) {
 	// }else{
 	// 	echo "hoanganh not in {$str}\n";
 	// }
-
+	 
 	// echo "has hoang anh?:";
 	// if(preg_match("/\bhoang anh\b/", $str)){
 	// 	echo "hoang anh in {$str}\n";
 	// }else{
 	// 	echo "hoang anh not in {$str}\n";
+	// }
+
+	// echo "has hoang anh?:";
+	// if(preg_match("/\bhoang anh\b|\ble\b/", $str)){
+	// 	echo "hoang anh || le in {$str}\n";
+	// }else{
+	// 	echo "hoang anh || le not in {$str}\n";
 	// }
 	
 //	 $pattern = "/^(hoanganh|hello|hi)/";
@@ -69,7 +76,15 @@ foreach ($strs as $str) {
 //		echo "pattern not in {$str}\n";
 //	}
 
-	$pattern = "/^(hello|hi)|(anh|tinker)$/";
+	// $pattern = "/^(hello|hi)|(anh|tinker)$/";
+	// echo "try pattern: ";
+	// if(preg_match($pattern, $str)){
+	// 	echo "pattern in {$str}\n";
+	// }else{
+	// 	echo "pattern not in {$str}\n";
+	// }
+	
+	$pattern = "/^(hello|hi)|(anh|tinker)$|\bhoanganh\b/";
 	echo "try pattern: ";
 	if(preg_match($pattern, $str)){
 		echo "pattern in {$str}\n";

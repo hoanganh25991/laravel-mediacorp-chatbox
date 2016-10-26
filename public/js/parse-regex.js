@@ -37,15 +37,35 @@
 						word = word.replace('|', '');
 
 					return word;
-				});
+				})
+				.join('');
 		//endWith regex: $
 		//result should be (hello|hi)$
 		wordsEndWith = `(${wordsEndWith})$`;
 
+		let test =
+			words.filter(word => !word.includes('*'));
+		console.log(test);
+
+		let wordsKeyword =
+			words.filter(word => !word.includes('*'))
+			     .map((word, index) => {
+				     //remove * indicate endWith
+				     // word = word.replace('*', '');
+				     //concat these word together by |
+				     //for keyword, BOUND them as exactly
+				     word = `|\\b${word}\\b`;
+				     if(index == 0)
+					     word = word.replace('|', '');
+
+				     return word;
+			     })
+			     .join('');
+
 
 		// return keyword;
 		// return `/${wordsStartWith}/`;
-		return `/${wordsEndWith}/`;
+		return `/${wordsKeyword}/`;
 	};
 
 	window.parseKeyword = parseKeyword;
