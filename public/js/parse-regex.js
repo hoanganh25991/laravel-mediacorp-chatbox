@@ -8,34 +8,46 @@
 		let words = keyword.split('||');
 		//remove empty string ''
 		words = words.filter(word => word);
-		let wordsStartWith = words.filter(word => word.endsWith('*'))
-			.map((word, index)=>{
-				//remove * indicate startWith
-				word = word.replace('*', '');
-				//concat these word together by ||
-				word = `|${word}`;
-				if(index == 0)
-					word = word.replace('|', '');
+		let wordsStartWith =
+			words.filter(word => word.endsWith('*'))
+			     .map((word, index)=>{
+				     //remove * indicate startWith
+				     word = word.replace('*', '');
+				     //concat these word together by ||
+				     word = `|${word}`;
+				     if(index == 0)
+					     word = word.replace('|', '');
 
-				return word;
-			})
-			.join('');
+				     return word;
+			     })
+			     .join('');
 		//startWith regex: ^
 		//result should be ^(\bhello\b||\bhi\b)
 		wordsStartWith = `^(${wordsStartWith})`;
 
 
+		let wordsEndWith =
+			words.filter(word => word.startsWith('*'))
+				.map((word, index) => {
+					//remove * indicate endWith
+					word = word.replace('*', '');
+					//concat these word together by |
+					word = `|${word}`;
+					if(index == 0)
+						word = word.replace('|', '');
+
+					return word;
+				});
+		//endWith regex: $
+		//result should be (hello|hi)$
+		wordsEndWith = `(${wordsEndWith})$`;
 
 
-		let wordsEndWith = words.filter(word => !word.endsWith('*'));
-
-
-
-		
 		// return keyword;
-		return `/${wordsStartWith}/`;
+		// return `/${wordsStartWith}/`;
+		return `/${wordsEndWith}/`;
 	};
-	
+
 	window.parseKeyword = parseKeyword;
 })();
 
