@@ -17,7 +17,7 @@
 /**
  * start with
  */
-$strs = ["hoang anh le", "hoanganh le", "le hoanganh", "hello hoanganh le", "hi hoang anhle", "hello anh"];
+$strs = ["hoang anh le", "hoanganh le", "le hoanganh", "hello hoanganh le", "hi hoang anhle", "hello anh", "yo?", "yo"];
 
 foreach ($strs as $str) {
 
@@ -42,17 +42,26 @@ foreach ($strs as $str) {
 	// 	echo "hoang anh not in {$str}\n";
 	// }
 	
-	// $pattern = "/^(hoanganh|hello|hi)/";
-	// echo "try pattern: ";
-	// if(preg_match($pattern, $str)){
-	// 	echo "pattern in {$str}\n";
-	// }else{
-	// 	echo "pattern not in {$str}\n";
-	// }
+//	 $pattern = "/^(hoanganh|hello|hi)/";
+//	 echo "try pattern: ";
+//	 if(preg_match($pattern, $str)){
+//	 	echo "pattern in {$str}\n";
+//	 }else{
+//	 	echo "pattern not in {$str}\n";
+//	 }
 
 	
 	// $pattern = "/^(?=.*hello)(?=.*anh)/s";
-	$pattern = "/^(?=.*hello)(?=.*\banh\b)/s";
+//	$pattern = "/^(?=.*hello)(?=.*\banh\b)/s";
+//	echo "try pattern: ";
+//	if(preg_match($pattern, $str)){
+//		echo "pattern in {$str}\n";
+//	}else{
+//		echo "pattern not in {$str}\n";
+//	}
+
+	$pattern = "/^(hello|hi|hey|yo)/";
+//	$pattern = "/^(\bhello\b|\bhi\b|\bhey\b|\byo\b)/";
 	echo "try pattern: ";
 	if(preg_match($pattern, $str)){
 		echo "pattern in {$str}\n";
