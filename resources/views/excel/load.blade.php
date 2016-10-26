@@ -26,6 +26,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.min.js"></script>
     <script src="{{ url('js/flash.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+    <script src="{{ url('js/parse-regex.js') }}"></script>
     <script>
         /**
          * Created by hoanganh25991 on 29/09/16.
@@ -65,13 +66,17 @@
                 //noinspection JSUnresolvedVariable
                 let wb = XLSX.read(data, {type: 'binary'});
 
+                //@warn: Sheet1 : hard-code
+                //detect through sheet name array
                 let wbJson = XLSX.utils.sheet_to_row_object_array(wb.Sheets['Sheet1']);
-//                wbJson.forEach(function(val){
-//                    var created_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
-//                    val.created_at = created_at;
-//                    val.updated_at = created_at;
-//                })
-//                ;
+                wbJson.forEach(function(val){
+                    //handle val['Keyword']
+                    //PARSE IT into php preg_match
+                    let keyword = val['Keyword'];
+                    let pattern = parseKeyword(keyword);
+//                    console.log(pattern);
+                })
+                ;
                 // console.log(wbJson);
                 let wbJsonPre = $('#wbJsonPre');
                 let wbJsonStr = JSON.stringify(wbJson);
