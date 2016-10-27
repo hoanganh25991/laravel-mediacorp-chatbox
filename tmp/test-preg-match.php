@@ -17,7 +17,7 @@
 /**
  * start with
  */
-$strs = ["hoang anh le", "hoanganh le", "le hoanganh", "hello hoanganh le", "hi hoang anhle", "hello anh", "yo?", "yo", "hey tinker", "hey anh",  "hello hoang anh", "helloyo anh", "anh hello", "I like", "should I like", "how are you ?", "how are you?"];
+$strs = ["hoang anh le", "hoanganh le", "le hoanganh", "hello hoanganh le", "hi hoang anhle", "hello anh", "yo?", "yo", "hey tinker", "hey anh",  "hello hoang anh", "helloyo anh", "anh hello", "I like", "should I like", "how are you ?", "how are you?", "how your day ?", "how your day?"];
 
 foreach ($strs as $str) {
 
@@ -130,7 +130,17 @@ foreach ($strs as $str) {
 
 	//try to start ONLY by "hoa"
 //	$pattern = "/^(hoa)/";
-	$pattern = "/^(\bhoa\b)/";
+//	$pattern = "/^(\bhoa\b)/";
+//	echo "try pattern: ";
+//	if(preg_match($pattern, $str)){
+//		echo "pattern in {$str}\n";
+//	}else{
+//		echo "pattern not in {$str}\n";
+//	}
+
+	$pattern = "/(\b\?\b)$/"; //wrong one, no thing match this
+	$pattern = "/(\?)$/";
+	$pattern = "/(?=.*(\byour day\b))(?=.*((\?)$))/i"; //good work for 'your day' && *?
 	echo "try pattern: ";
 	if(preg_match($pattern, $str)){
 		echo "pattern in {$str}\n";

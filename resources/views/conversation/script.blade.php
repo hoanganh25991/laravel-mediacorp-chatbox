@@ -107,7 +107,7 @@
             let chatboxReply = chatboxReplyTemplate.clone();
             conversationDiv.append(chatboxReply);
 
-            conversationDiv.scrollTop(conversationDiv.height());
+            conversationDiv.scrollTop(10000);
 
             $.post({
                 url: '{{ url("script") }}',
@@ -119,6 +119,7 @@
                     console.log(res);
 
                     chatboxReply.find('button').text(res['response']);
+                    conversationDiv.scrollTop(10000);
                     audio.play();
                 },
                 error(res){

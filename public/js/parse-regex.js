@@ -9,9 +9,9 @@
 		 */
 		let expressions = keyword.split('||').filter(notEmpty => notEmpty);
 
-		function parseQuestionMark(word){
-			if(word.includes('?'))
-				word = word.replace('?', '\\?');
+		function parseBoundaryQuesMark(word){
+			//@warn implicit, no case of keyword as *your day?||how
+			word = word.includes('?')? word.replace('?', '\\?') : `\\b${word}\\b`;
 
 			return word;
 		}
@@ -26,7 +26,7 @@
 				.filter(expression => !expression.includes('&&'))
 				.filter(expression => expression.endsWith('*'))
 				.map(word => word.replace(/\*/g, ''))
-				.map(word => `\\b${parseQuestionMark(word)}\\b`)
+				.map(word => parseBoundaryQuesMark(word))
 				.join('|');
 
 		if(wordsStartWith)
@@ -40,7 +40,7 @@
 				.filter(expression => !expression.includes('&&'))
 				.filter(expression => expression.startsWith('*'))
 				.map(word => word.replace(/\*/g, ''))
-				.map(word => `\\b${parseQuestionMark(word)}\\b`)
+				.map(word => parseBoundaryQuesMark(word))
 				.join('|');
 
 		if(wordsEndWith)
@@ -52,7 +52,7 @@
 		let wordsKeyword =
 			expressions
 				.filter(expression => !expression.includes('*') && !expression.includes('&&'))
-				.map(word => `\\b${parseQuestionMark(word)}\\b`)
+				.map(word => parseBoundaryQuesMark(word))
 				.join('|');
 
 		/**

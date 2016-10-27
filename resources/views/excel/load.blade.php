@@ -1,39 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="panel panel-default">
-        <h1 class="panel-heading">Load excel file</h1>
-        <div class="panel-body">
-            <form action="" method="POST" id="loadChatbox" enctype="multipart/form-data">
-                <input type="hidden" name="excel_parsed">
-                <input type="hidden" name="excel_default_parsed">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <h1 class="panel-heading">Load excel file</h1>
+                <div class="panel-body">
+                    <form action="" method="POST" id="loadChatbox" enctype="multipart/form-data">
+                        <input type="hidden" name="excel_parsed">
+                        <input type="hidden" name="excel_default_parsed">
 
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">Boyfriend</span>
-                        <input type="file" name="excel_file" class="form-control">
-                    </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">Boyfriend</span>
+                                <input type="file" name="excel_file" class="form-control">
+                            </div>
 
-                    <small class="text-muted">Upload your boyfriend file</small>
+                            <small class="text-muted">Upload your boyfriend file</small>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">Boyfriend_default</span>
+                                <input type="file" name="excel_default_file" class="form-control">
+                            </div>
+
+                            <small class="text-muted">
+                                Upload your boyfriend_default file, a fallback answer when keyword not found
+                            </small>
+                        </div>
+
+                        <pre id="wbObjPre"></pre>
+
+                        <button id="btnLoad" class="btn btn-info">Load</button>
+                    </form>
                 </div>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">Boyfriend_default</span>
-                        <input type="file" name="excel_default_file" class="form-control">
-                    </div>
-
-                    <small class="text-muted">
-                        Upload your boyfriend_default file, a fallback answer when keyword not found
-                    </small>
-                </div>
-
-                <pre id="wbObjPre"></pre>
-
-                <button id="btnLoad" class="btn btn-info">Load</button>
-            </form>
+            </div>
         </div>
     </div>
+
     <style>
         #wbObjPre {
             white-space: normal;
@@ -143,7 +148,7 @@
             let excelDefaultParsedJson = excelDefaultParsed.val();
 
             if(!excelParsedJson.trim() || !excelDefaultParsedJson){
-                flash(`Please upload <strong>both boyfriend & boyfriend_default file</strong>`, 'warning');
+                flash(`Please upload <strong>both boyfriend & boyfriend_default file</strong>`);
                 return;
             }
 

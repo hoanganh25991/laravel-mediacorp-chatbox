@@ -26,6 +26,12 @@ class ConversationController extends Controller
 
             //query on $conversation, get out ANSWER
             $userReply = $req->get('user_reply');
+            //add space into userReply, bcs day? considerd as whole ONE
+            //which dif from 'day ?' considered as 'day' and '?'
+            //@info php preg_match can solve 'how are you?'
+            //no need to modify here
+//            $arr = explode('?', $userReply);
+//            $userReply = implode(' ?', $arr);
             //find out matched answer in conversation
             $answers = $conversation->filter(function($val) use($userReply){
                 $pattern = $val['Keyword'];
