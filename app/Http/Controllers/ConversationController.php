@@ -8,7 +8,8 @@ use App\Conversation;
 class ConversationController extends Controller
 {
     public function script(Request $req){
-//        $conversations = Conversation::all();
+        //only get out main boyfriend chatbox
+        //default is for fallback
         $conversations = Conversation::where('name', 'not like', '%default%')->get();
 
         if($req->method() == 'GET'){
@@ -17,13 +18,15 @@ class ConversationController extends Controller
 
         if($req->method() == 'POST'){
             $chatboxName = $req->get('chatbox_name');
+            //find out conversation base on chatboxName
+            //store into collection
             $conversation = $conversations->where('name', $chatboxName)->first();
-
             $conversation = json_decode($conversation->content, true);
             $conversation = collect($conversation);
 
             //query on $conversation, get out ANSWER
             $userReply = $req->get('user_reply');
+            //find out matched answer in conversation
             $answers = $conversation->filter(function($val) use($userReply){
                 $pattern = $val['Keyword'];
 
@@ -41,33 +44,32 @@ class ConversationController extends Controller
                 $x = random_int(1, 3);
                 $responseX = "Response {$x}";
                 //some answer return as -
-                //what the HECK @@, give back the 'Response 1
+                //what the HECK @@, fall back to the 'Response 1'
                 $answer = $answers[0][$responseX];
+                //@warn must have Response 1
                 $answer = ($answer != '-') ? $answer : $answers[0]['Response 1'];
             }
-            //IF NO ANSWER FAULT
-            //LOAD FROM default
-            if(!($answers->count() > 0)){
-//                $answer = $answers->count() > 0 ? $answers[0][$responseX] : 'sorry, i mis what you mean';
+            //if NO answer found, load random one in default
+//            if(!($answers->count() > 0)){
+            if(empty($answer)){
                 $tmp = explode('.', $chatboxName);
                 $chatboxNameWithoutExt = $tmp[0];
                 $pattern = "(^({$chatboxNameWithoutExt}).*default)";
-                //look for default
+                //look for default conversation
                 $conversation = Conversation::where('name', 'regexp', $pattern)->first();
+
                 if($conversation && $conversation->count() > 0){
                     $conversation = json_decode($conversation->content, true);
                     $conversation = collect($conversation);
-                    //@warn pretend that $conversation not empty arr
-                    $answer = $conversation[random(0, $conversation->count())];
+//                    $answer = $conversation[random_int(0, $conversation->count() - 1)];
+                    $answer = $conversation->random(1);
                 }
             }
 
             if(empty($answer))
                 $answer = 'Sorry, i miss your context';
 
-//            return compact('userReply', 'answer');
-//            return response(compact('userReply', 'answer'), 200, ['Content-Type' => 'application/json']);
-            return response(['answer' => $answer], 200, ['Content-Type' => 'application/json']);
+            return response(['response' => $answer], 200, ['Content-Type' => 'application/json']);
         }
     }
 }

@@ -82,16 +82,14 @@
 
         let userReplyTemplate = $('<div class="row message">\n<div class="col-md-8  col-md-push-4">\n<div class="pull-right">\n<button class="btn"><\/button>\n<\/div>\n<\/div>\n<\/div>');
         let chatboxReplyTemplate = $('<div class="row message">\n<div class="col-md-8">\n<div class="pull-left">\n<button class="btn"><img src="{{ url('images/icon_status.gif') }}"><\/button>\n<\/div>\n<\/div>\n<\/div>');
-//        console.log(userReplyTemplate);
-//        console.log(chatboxReplyTemplate);
 
         let audio = new Audio('{{ url("sounds/all-eyes-on-me.mp3") }}');
 
         btnSendMsg.on('click', handleMessage);
         $(document).keypress(function(e) {
-            if(e.which == 13) {
+            if(e.which == 13)
                 handleMessage();
-            }
+
             console.log('press key');
         });
 
@@ -119,9 +117,9 @@
                 },
                 success(res){
                     console.log(res);
-                    chatboxReply.find('button').text(res['answer']);
+
+                    chatboxReply.find('button').text(res['response']);
                     audio.play();
-//                    conversationDiv.append(chatboxReply);
                 },
                 error(res){
                     console.log(res);

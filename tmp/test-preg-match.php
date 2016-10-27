@@ -120,7 +120,17 @@ foreach ($strs as $str) {
 //		echo "pattern not in {$str}\n";
 //	}
 
-	$pattern = "/(yo\?)$/";
+//	$pattern = "/(yo\?)$/";
+//	echo "try pattern: ";
+//	if(preg_match($pattern, $str)){
+//		echo "pattern in {$str}\n";
+//	}else{
+//		echo "pattern not in {$str}\n";
+//	}
+
+	//try to start ONLY by "hoa"
+//	$pattern = "/^(hoa)/";
+	$pattern = "/^(\bhoa\b)/";
 	echo "try pattern: ";
 	if(preg_match($pattern, $str)){
 		echo "pattern in {$str}\n";
