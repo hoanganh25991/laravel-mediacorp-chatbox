@@ -23,6 +23,7 @@
 		console.log(a);
 		let wordsStartWith =
 			expressions
+				.filter(expression => !expression.includes('&&'))
 				.filter(expression => expression.endsWith('*'))
 				.map(word => word.replace(/\*/g, ''))
 				.map(word => `\\b${parseQuestionMark(word)}\\b`)
@@ -36,6 +37,7 @@
 		 */
 		let wordsEndWith =
 			expressions
+				.filter(expression => !expression.includes('&&'))
 				.filter(expression => expression.startsWith('*'))
 				.map(word => word.replace(/\*/g, ''))
 				.map(word => `\\b${parseQuestionMark(word)}\\b`)
@@ -49,7 +51,7 @@
 		 */
 		let wordsKeyword =
 			expressions
-				.filter(expression => !expression.includes('*') && !expression.includes('&'))
+				.filter(expression => !expression.includes('*') && !expression.includes('&&'))
 				.map(word => `\\b${parseQuestionMark(word)}\\b`)
 				.join('|');
 
@@ -58,10 +60,10 @@
 		 */
 		let andExpressions =
 			expressions
-				.filter(expression => expression.includes('&'))
+				.filter(expression => expression.includes('&&'))
 				.map(ex =>{
-					let words = ex.split('&').filter(notEmpty => notEmpty);
-					let tmp = words.map(word => `(?=.*${_parseKeyword(word)})`).join('');
+					let words = ex.split('&&').filter(notEmpty => notEmpty);
+					let tmp = words.map(word => `(?=.*(${_parseKeyword(word)}))`).join('');
 
 					return tmp;
 				})
