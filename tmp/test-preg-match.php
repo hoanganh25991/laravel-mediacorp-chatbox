@@ -17,7 +17,7 @@
 /**
  * start with
  */
-$strs = ["hoang anh le", "hoanganh le", "le hoanganh", "hello hoanganh le", "hi hoang anhle", "hello anh", "yo?", "yo", "hey tinker", "hey anh",  "hello hoang anh", "helloyo anh", "anh hello", "I like", "should I like"];
+$strs = ["hoang anh le", "hoanganh le", "le hoanganh", "hello hoanganh le", "hi hoang anhle", "hello anh", "yo?", "yo", "hey tinker", "hey anh",  "hello hoang anh", "helloyo anh", "anh hello", "I like", "should I like", "how are you ?", "how are you?"];
 
 foreach ($strs as $str) {
 
@@ -112,7 +112,15 @@ foreach ($strs as $str) {
 	// 	echo "pattern not in {$str}\n";
 	// }
 
-	$pattern = "/(\?)$/";
+//	$pattern = "/(\?)$/";
+//	echo "try pattern: ";
+//	if(preg_match($pattern, $str)){
+//		echo "pattern in {$str}\n";
+//	}else{
+//		echo "pattern not in {$str}\n";
+//	}
+
+	$pattern = "/(yo\?)$/";
 	echo "try pattern: ";
 	if(preg_match($pattern, $str)){
 		echo "pattern in {$str}\n";

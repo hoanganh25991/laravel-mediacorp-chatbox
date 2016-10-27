@@ -65,7 +65,7 @@
 		let phpPattern = _parseKeyword(keyword);
 		//bcs ? is specical character
 		//add \
-		phpPattern = phpPattern.replace('?', '\\?');
+		// phpPattern = phpPattern.replace('?', '\\?');
 		if(!phpPattern)
 			phpPattern = '\'\'';
 

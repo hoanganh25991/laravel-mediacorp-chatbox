@@ -10,7 +10,7 @@
 
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon">Boyfriend*.xlsx</span>
+                        <span class="input-group-addon">Boyfriend</span>
                         <input type="file" name="excel_file" class="form-control">
                     </div>
 
@@ -19,12 +19,12 @@
 
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon">Boyfriend*_default.xlsx</span>
+                        <span class="input-group-addon">Boyfriend_default</span>
                         <input type="file" name="excel_default_file" class="form-control">
                     </div>
 
-                    <small class="text-muted">Upload your boyfriend_default file, a fallback answer when keyword not
-                        found
+                    <small class="text-muted">
+                        Upload your boyfriend_default file, a fallback answer when keyword not found
                     </small>
                 </div>
 
@@ -47,9 +47,9 @@
 @section('my_script')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.min.js"></script>
-    {{--<script src="{{ url('js/flash.js') }}"></script>--}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+
     <script src="{{ url('js/parse-regex.js') }}"></script>
+
     <script>
         console.log(flashDiv);
         //for main excel file
@@ -146,7 +146,7 @@
                 flash(`Please upload <strong>both boyfriend & boyfriend_default file</strong>`, 'warning');
                 return;
             }
-            
+
             form.submit();
         });
     </script>
