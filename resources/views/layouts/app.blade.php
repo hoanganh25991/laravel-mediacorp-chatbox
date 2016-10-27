@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link href="{{ url('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="{{ url('css/main.css') }}">
 
     <!-- Scripts -->
     <script>
@@ -78,8 +79,14 @@
                 </div>
             </div>
         </nav>
+        <!-- Scripts -->
+        <script src="{{ url('js/app.js') }}"></script>
 
         <div class="container-fluid">
+            <div class="f_overlay">
+                @include('flash::message')
+                <script src="{{ url('js/load-flash.js') }}"></script>
+            </div>
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     @yield('content')
@@ -89,8 +96,6 @@
 
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ url('js/app.js') }}"></script>
     @yield('my_script')
 </body>
 </html>

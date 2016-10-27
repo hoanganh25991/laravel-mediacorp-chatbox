@@ -1,0 +1,7 @@
+.f_overlay{
+    position: fixed;
+    right: 0;
+    /*width: 350px;*/
+    /*width: 10%;*/
+    z-index: 1000;
+}
