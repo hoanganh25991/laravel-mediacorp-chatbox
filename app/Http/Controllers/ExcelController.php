@@ -37,7 +37,29 @@ class ExcelController extends Controller
             //just for pretty notification
             $excelParsed = json_decode($excelParsed, true);
 
-            return compact('excelParsed', 'uploadedFilePath');
+            //handle over default file
+            $excelDefaultFile = $req->file('excel_default_file');
+            $defaultFileName = $excelDefaultFile->getClientOriginalName();
+            $uploadedDefaultFilePath = $excelDefaultFile->storeAs('definition', $defaultFileName);
+
+            //excel_parsed
+            $excelDefaultParsed = $req->get('excel_default_parsed');
+
+            $conversationDefault = Conversation::where('name', $defaultFileName)->first();
+            if(!$conversationDefault)
+                $conversationDefault = new Conversation();
+
+            $conversationDefault->fill([
+                'name' => $defaultFileName,
+                'content' => $excelDefaultParsed
+            ]);
+
+            $conversationDefault->save();
+
+            //just for pretty notification
+            $excelDefaultParsed = json_decode($excelDefaultParsed, true);
+
+            return compact('excelParsed', 'excelDefaultParsed', 'uploadedFilePath', 'uploadedDefaultFilePath');
         }
     }
 }
