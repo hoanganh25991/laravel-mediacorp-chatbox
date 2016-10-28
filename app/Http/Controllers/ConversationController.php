@@ -32,6 +32,7 @@ class ConversationController extends Controller
             //no need to modify here
 //            $arr = explode('?', $userReply);
 //            $userReply = implode(' ?', $arr);
+            $userReply = preg_replace("/\.|\.\.|!/", '', $userReply);
             //find out matched answer in conversation
             $answers = $conversation->filter(function($val) use($userReply){
                 $pattern = $val['Keyword'];

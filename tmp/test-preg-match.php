@@ -167,6 +167,14 @@ foreach ($strs as $str) {
 
 }
 
+$userReplys = ['hello.', 'i mis you..', "love you!"];
+
+foreach($userReplys as $userReply){
+	$a = preg_replace("/\.|\.\.|!/", '', $userReply);
+	echo $a . "\n";
+}
+
+
 
 
 

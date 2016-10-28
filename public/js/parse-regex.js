@@ -24,7 +24,7 @@
 		let wordsStartWith =
 			expressions
 				.filter(expression => !expression.includes('&&'))
-				.filter(expression => expression.endsWith('*'))
+				.filter(expression => expression.endsWith('*') && !expression.startsWith('*'))
 				.map(word => word.replace(/\*/g, ''))
 				.map(word => parseBoundaryQuesMark(word))
 				.join('|');
@@ -38,7 +38,7 @@
 		let wordsEndWith =
 			expressions
 				.filter(expression => !expression.includes('&&'))
-				.filter(expression => expression.startsWith('*'))
+				.filter(expression => expression.startsWith('*') && !expression.endsWith('*'))
 				.map(word => word.replace(/\*/g, ''))
 				.map(word => parseBoundaryQuesMark(word))
 				.join('|');
@@ -51,7 +51,9 @@
 		 */
 		let wordsKeyword =
 			expressions
-				.filter(expression => !expression.includes('*') && !expression.includes('&&'))
+				.filter(expression => !expression.includes('&&'))
+				.filter(expression => expression.startsWith('*') && expression.endsWith('*'))
+				.map(word => word.replace(/\*/g, ''))
 				.map(word => parseBoundaryQuesMark(word))
 				.join('|');
 
@@ -64,12 +66,6 @@
 				.map(ex =>{
 					let words = ex.split('&&').filter(notEmpty => notEmpty);
 					let tmp = words.map(word => `(?=.*(${_parseKeyword(word)}))`).join('');
-					//detect regex conflict
-					//end with <keyword> && end with <?>
-					//resolve by remove (\?)$ => (?)$
-					let endWithOccurTimes = tmp.match(/\$/g).length;
-					if(endWithOccurTimes > 1)
-						tmp = tmp.replace('\\?', '?');//replace where end with ? occur
 
 					return tmp;
 				})
