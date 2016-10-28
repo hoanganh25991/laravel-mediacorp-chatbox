@@ -64,6 +64,12 @@
 				.map(ex =>{
 					let words = ex.split('&&').filter(notEmpty => notEmpty);
 					let tmp = words.map(word => `(?=.*(${_parseKeyword(word)}))`).join('');
+					//detect regex conflict
+					//end with <keyword> && end with <?>
+					//resolve by remove (\?)$ => (?)$
+					let endWithOccurTimes = tmp.match(/\$/g).length;
+					if(endWithOccurTimes > 1)
+						tmp = tmp.replace('\\?', '?');//replace where end with ? occur
 
 					return tmp;
 				})
