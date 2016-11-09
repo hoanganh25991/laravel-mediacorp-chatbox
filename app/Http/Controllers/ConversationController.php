@@ -23,6 +23,13 @@ class ConversationController extends Controller
             //find out conversation base on chatboxName
             //store into collection
             $conversation = $conversations->where('name', $chatboxName)->first();
+//            $conversation = $conversations->where('name', 'asdfasdf')->first();
+            // Check no $conversation added
+            if(empty($conversation)){
+                $answer = 'I\'m sorry. But, no chatbox added. Ask admin for help.';
+                return response(['response' => $answer], 200, ['Content-Type' => 'application/json']);
+            }
+
             $conversation = json_decode($conversation->content, true);
             $conversation = collect($conversation);
 
