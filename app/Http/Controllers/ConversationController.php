@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Conversation;
+use DB;
+//use \PDO;
 
 class ConversationController extends Controller
 {
@@ -61,9 +63,16 @@ class ConversationController extends Controller
             if(empty($answer)){
                 $tmp = explode('.', $chatboxName);
                 $chatboxNameWithoutExt = $tmp[0];
-                $pattern = "(^({$chatboxNameWithoutExt}).*default)";
+//                $pattern = "(^({$chatboxNameWithoutExt}).*default)";
+                $pattern = "%{$chatboxNameWithoutExt}%default%";
                 //look for default conversation
-                $conversation = Conversation::where('name', 'regexp', $pattern)->first();
+//                $conversation = Conversation::where('name', 'regexp', $pattern)->first();
+                // 'expr' to work with sqlite
+//                $conversation = Conversation::where('name', 'expr', $pattern)->first();
+//                $conversation = Conversation::where('name', '=', 'boyfriend1_default.xlsx')->first();
+
+
+                $conversation = Conversation::where('name', 'like', $pattern)->first();
 
                 if($conversation && $conversation->count() > 0){
                     $conversation = json_decode($conversation->content, true);
