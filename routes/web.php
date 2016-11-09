@@ -24,3 +24,14 @@ Route::post('excel/load', 'ExcelController@load');
 
 Route::get('script', 'ConversationController@script');
 Route::post('script', 'ConversationController@script');
+
+Route::group([
+    'prefix' => 'api'
+], function(){
+    Route::get('register', 'RegisterController@regis');
+    
+    Route::group(['middleware' => 'token'], function(){
+        Route::get('script', 'ConversationController@script');
+        Route::post('script', 'ConversationController@script');
+    });
+});
