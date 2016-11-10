@@ -75,6 +75,12 @@ class RegisterController extends Controller
             if($messenger->device_uuid != $deviceUuid){
                 return $this->res($req->all(), 'User name already exist', 422);
             }
+
+            /**
+             * Accepted user, update his info
+             */
+            $req->merge(['device_uuid' => $req->get('new_device_uuid')]);
+//            $req->replace(['device_uuid' => 3]);
         }
         
         $messenger->fill($req->all());
