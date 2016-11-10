@@ -40,7 +40,7 @@
 
                     <div class="form-group">
                         <div class="input-group">
-                            <input name="user_reply" placeholder="text your message" class="form-control">
+                            <input name="user_text" placeholder="text your message" class="form-control">
 
                             <span class="input-group-btn">
                                 <button class="btn btn-info" id="btnSendMsg">
@@ -76,7 +76,7 @@
 @section('my_script')
     <script>
         let btnSendMsg = $('#btnSendMsg');
-        let userReplyInput = $('input[name="user_reply"]');
+        let userReplyInput = $('input[name="user_text"]');
         let selectChatbox = $('select[name="chatbox_name"]');
         let conversationDiv = $('#conversation');
 
@@ -94,12 +94,12 @@
         });
 
         function handleMessage(){
-            let user_reply = userReplyInput.val();
+            let user_text = userReplyInput.val();
             let chatbox_name = selectChatbox.val();
 
             //append to conversationDiv
             let userReplyTmp = userReplyTemplate.clone();
-            userReplyTmp.find('button').text(user_reply);
+            userReplyTmp.find('button').text(user_text);
             conversationDiv.append(userReplyTmp);
             //clear input text
             userReplyInput.val('');
@@ -112,7 +112,7 @@
             $.post({
                 url: '{{ url("script") }}',
                 data: {
-                    user_reply,
+                    user_text,
                     chatbox_name
                 },
                 success(res){

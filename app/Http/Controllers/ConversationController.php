@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Conversation;
 use DB;
+use Validator;
 //use \PDO;
+use App\Traits\ApiResponse;
 
 class ConversationController extends Controller
 {
+    use ApiResponse;
+    
     public function script(Request $req){
         //only get out main boyfriend chatbox
         //default is for fallback
@@ -19,6 +23,15 @@ class ConversationController extends Controller
         }
 
         if($req->method() == 'POST'){
+            $validator = Validator::make($req->all(), [
+                'chatbox_name' => 'required',
+                'user_text' => 'required'
+            ]);
+            
+            if($validator->fails()){
+                return $this->res($req->all(), $validator->messages(), 422);
+            }
+            
             $chatboxName = $req->get('chatbox_name');
             //find out conversation base on chatboxName
             //store into collection
@@ -34,7 +47,7 @@ class ConversationController extends Controller
             $conversation = collect($conversation);
 
             //query on $conversation, get out ANSWER
-            $userReply = $req->get('user_reply');
+            $userReply = $req->get('user_text');
             //add space into userReply, bcs day? considerd as whole ONE
             //which dif from 'day ?' considered as 'day' and '?'
             //@info php preg_match can solve 'how are you?'

@@ -29,6 +29,7 @@ Route::group([
     'prefix' => 'api'
 ], function(){
     Route::get('register', 'RegisterController@regis');
+    Route::get('update', 'RegisterController@regis');
     
     Route::group(['middleware' => 'token'], function(){
         Route::get('script', 'ConversationController@script');
