@@ -118,6 +118,12 @@
                 success(res){
                     console.log(res);
 
+                    if(res['response'] == 'I hear you, but no anwser'){
+//                        console.log('Listen, but no answer case');
+                        chatboxReply.find('button').remove();
+                        return;
+                    }
+
                     chatboxReply.find('button').text(res['response']);
                     conversationDiv.scrollTop(10000);
                     audio.play();
