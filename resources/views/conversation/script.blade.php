@@ -74,6 +74,7 @@
 @endsection
 
 @section('my_script')
+    <script src="{{ url('js/emojione.min.js') }}"></script>
     <script>
         let btnSendMsg = $('#btnSendMsg');
         let userReplyInput = $('input[name="user_reply"]');
@@ -95,6 +96,10 @@
 
         function handleMessage(){
             let user_reply = userReplyInput.val();
+//            console.log('emojione convert', emojione.toShort(user_reply));
+            let emojiShortname = emojione.toShort(user_reply);
+            let isUserUserEmoji = emojiShortname != user_reply;
+
             let chatbox_name = selectChatbox.val();
 
             //append to conversationDiv
@@ -103,6 +108,11 @@
             conversationDiv.append(userReplyTmp);
             //clear input text
             userReplyInput.val('');
+
+            if(isUserUserEmoji){
+                //Do nothing
+                return
+            }
 
             let chatboxReply = chatboxReplyTemplate.clone();
             conversationDiv.append(chatboxReply);
