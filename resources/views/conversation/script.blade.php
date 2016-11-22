@@ -75,6 +75,7 @@
 
 @section('my_script')
     <script src="{{ url('js/emojione.min.js') }}"></script>
+    <script src="{{ url('js/singularize.js') }}"></script>
     <script>
         let btnSendMsg = $('#btnSendMsg');
         let userReplyInput = $('input[name="user_reply"]');
@@ -140,9 +141,29 @@
 
             conversationDiv.scrollTop(10000);
 
+            let transformToSingular = function(text){
+                /**
+                 * This function can use BCS i have injected into global
+                 * check singularize.js
+                 */
+                let textSingleWords = text.split(' ');
+                textSingleWords = textSingleWords.map(word => singularize(word));
+
+                return textSingleWords.join(' ');
+            }
+            /**
+             * Change user type in with plural to singularize
+             * SO DANGER when manipulate on user_reply this way
+             * AAAA
+             */
+            let user_reply_origin = user_reply;
+            user_reply = transformToSingular(user_reply);
+
             $.post({
                 url: '{{ url("script") }}',
                 data: {
+                    // bcs i've manipulate on user_reply, let the origin here
+                    user_reply_origin,
                     user_reply,
                     chatbox_name
                 },
