@@ -113,7 +113,9 @@
                 while(text.match(emojiEmoticonPattern)){
                     text = text.replace(emojiEmoticonPattern, '');
                 }
-                console.log('text after replace ALL match emoji, emoticon', text);
+//                console.log('text after replace ALL match emoji, emoticon', text);
+                console.log('text after replcae ALlL emoji, emoticon');console.log(text);
+                text = text.replace(/s+/g, '');
                 r = (text == '');
                 console.log(r);
 
@@ -158,6 +160,7 @@
              */
             let user_reply_origin = user_reply;
             user_reply = transformToSingular(user_reply);
+            console.log('text after change to singular');console.log(user_reply);
 
             $.post({
                 url: '{{ url("script") }}',
