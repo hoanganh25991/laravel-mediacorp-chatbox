@@ -97,8 +97,27 @@
         function handleMessage(){
             let user_reply = userReplyInput.val();
 //            console.log('emojione convert', emojione.toShort(user_reply));
-            let emojiShortname = emojione.toShort(user_reply);
-            let isUserUserEmoji = emojiShortname != user_reply;
+            let isUserOnlyUseEmoji = function(text){
+                let r = false;
+                let emojiEmoticonPattern = /(:\w+:|<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[:;=]|[:;=B8][\-\^]?[3DOPp@\$\*\\\)\(\/\|])(?=\s|[!\.\?]|$)/g;
+                //Convert ANY NATIVE UNICODE to shortname
+                text = emojione.toShort(text);
+                console.log('text after emojione navtice>shortname convert', text);
+//                if(text.match(emojiEmoticonPattern)){
+//                    console.log('match emoji, emoticon in reply');
+//                    text = text.replace(emojiEmoticonPattern, '');
+//                    console.log('text after replace emoji, emoticon', text);
+//                    r = (text == '');
+//                }
+                while(text.match(emojiEmoticonPattern)){
+                    text = text.replace(emojiEmoticonPattern, '');
+                }
+                console.log('text after replace ALL match emoji, emoticon', text);
+                r = (text == '');
+                console.log(r);
+
+                return r;
+            }
 
             let chatbox_name = selectChatbox.val();
 
@@ -106,10 +125,12 @@
             let userReplyTmp = userReplyTemplate.clone();
             userReplyTmp.find('button').text(user_reply);
             conversationDiv.append(userReplyTmp);
+            conversationDiv.scrollTop(10000);
+
             //clear input text
             userReplyInput.val('');
 
-            if(isUserUserEmoji){
+            if(isUserOnlyUseEmoji(user_reply)){
                 //Do nothing
                 return
             }
