@@ -69,7 +69,9 @@ class ConversationController extends Controller
                     $conversation = json_decode($conversation->content, true);
                     $conversation = collect($conversation);
 //                    $answer = $conversation[random_int(0, $conversation->count() - 1)];
-                    $answer = $conversation->random(1);
+                    if($conversation->count() > 0){
+                        $answer = $conversation->random(1);
+                    }
                 }
             }
 
