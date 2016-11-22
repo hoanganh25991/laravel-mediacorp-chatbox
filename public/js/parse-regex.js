@@ -9,11 +9,36 @@
 		 */
 		let expressions = keyword.split('||').filter(notEmpty => notEmpty);
 
+		function escapeSpecialCharacterInRegex(text){
+			let r = {
+				hasSpecialCharacter: false,
+				text: text
+			};
+
+			if(text.match(/\W+/)){
+				r.hasSpecialCharacter = true;
+				r.text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');;
+
+				return r;
+			}
+
+			return r;
+		}
+
 		function parseBoundaryQuesMark(word){
 			//@warn implicit, no case of keyword as *your day?||how
-			word = word.includes('?')? word.replace('?', '\\?') : `\\b${word}\\b`;
+			// word = word.includes('?')? word.replace('?', '\\?') : `\\b${word}\\b`;
+			// check ? is just one of special character, try on escape
+			let r = escapeSpecialCharacterInRegex(word);
+			/**
+			 * I HAVE TO CHECK THIS BCS BOUDARY WORD only work for "word"
+			 * not special character in side
+			 * @type {string}
+			 */
+			word = r.hasSpecialCharacter ? r.text : `\\b${r.text}\\b`
 
 			return word;
+			// return `\\b${word}\\b`;
 		}
 
 		/**
