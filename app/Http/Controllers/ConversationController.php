@@ -55,7 +55,17 @@ class ConversationController extends Controller
                     && $answers[0]['Response 2'] == '-'
                     && $answers[0]['Response 3'] == '-'){
                     $answer = $NO_ANSWER;
-                }else{
+                }
+
+                if(empty($answer)){
+
+                    /**
+                     * SET DEFAULT AT ONE
+                     */
+                    if(!empty($answers[0]['Response 1'])){
+                        $answer = $answers[0]['Response 1'];
+                    }
+
                     //Play random case
                     //only get the higher response  $answers[0]
                     //random one
@@ -63,9 +73,9 @@ class ConversationController extends Controller
                     $responseX = "Response {$x}";
                     //some answer return as -
                     //what the HECK @@, fall back to the 'Response 1'
-                    $answer = $answers[0][$responseX];
-                    //@warn must have Response 1
-                    $answer = ($answer != '-') ? $answer : $answers[0]['Response 1'];
+                    if(!empty($answers[0][$responseX]) && $answers[0][$responseX] != '-'){
+                        $answer = $answers[0][$responseX];
+                    }
                 }
             }
             //if NO answer found, load random one in default
