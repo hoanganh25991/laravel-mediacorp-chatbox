@@ -51,11 +51,16 @@ class ConversationController extends Controller
              */
             if($answers->count() > 0){
                 $NO_ANSWER = "I hear you, but no anwser";
-                if($answers[0]['Response 1'] == '-'
-                    && $answers[0]['Response 2'] == '-'
-                    && $answers[0]['Response 3'] == '-'){
-                    $answer = $NO_ANSWER;
+                try{
+                    if($answers[0]['Response 1'] == '-'
+                        && $answers[0]['Response 2'] == '-'
+                        && $answers[0]['Response 3'] == '-'){
+                        $answer = $NO_ANSWER;
+                    }
+                }catch(\Exception $e){
+                    $answer = '';
                 }
+
 
                 if(empty($answer)){
 

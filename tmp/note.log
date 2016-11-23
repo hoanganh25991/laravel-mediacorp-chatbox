@@ -1,0 +1,17 @@
++ work with emoji emoticon
+emoticon :D, :*, :O, ...
+BUT emoji is image (as we usually seen)
+	>native:  ACTUALLY Unicode character like U+123
+	>shortname: ":thumbsup:" ":smile:"
+	>image: ANY VENDOR can ship with their image
+
+When mobile send message, they send 'NATIVE CODE' to save bandwidth
+we need to convert native > shortname > image
+
++ boudary \b[word]\b, we call boudary keyword
+BUT \b[word]\b ONLY work with "WORD"
+"NON-WORD" is special character like +, =, ^^, &&,...
+\w+ : "WORD"
+\W+ : "NON-WORD"
+
++ ^ $ in regex ≠ \b \B
