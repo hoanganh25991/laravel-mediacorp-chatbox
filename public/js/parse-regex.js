@@ -15,9 +15,16 @@
 				text: text
 			};
 
-			if(text.match(/\W+/)){
+			// if(text.match(/\W+/)){
+			// 	r.hasSpecialCharacter = true;
+			// 	r.text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+
+
+			// 	return r;
+			// }
+			if(text.match(/[^a-zA-Z ]/g)){
 				r.hasSpecialCharacter = true;
-				r.text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');;
+				r.text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 				return r;
 			}
