@@ -149,7 +149,14 @@
                  * check singularize.js
                  */
                 let textSingleWords = text.split(' ');
-                textSingleWords = textSingleWords.map(word => singularize(word));
+                textSingleWords = textSingleWords.map(function(word){
+                    let singularWord = singularize(word);
+                    let pluralWord = pluralize(singularWord);
+
+                    // I HAVE TO CHECK THIS bcs pluarlize/sigularize may fail
+                    // when fail it manipulate on user_reply WRONG
+                    return pluralWord == word ? singularWord : word;
+                })
 
                 return textSingleWords.join(' ');
             }
