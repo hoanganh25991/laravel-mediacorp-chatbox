@@ -67,16 +67,43 @@ class ConversationController extends Controller
 
             $answer = '';
 
+            /**
+             * may be more then 1 $answers
+             * just choose the first one $answer[0]
+             */
             if($answers->count() > 0){
-                //only get the higher response  $answers[0]
-                //random one
-                $x = random_int(1, 3);
-                $responseX = "Response {$x}";
-                //some answer return as -
-                //what the HECK @@, fall back to the 'Response 1'
-                $answer = $answers[0][$responseX];
-                //@warn must have Response 1
-                $answer = ($answer != '-') ? $answer : $answers[0]['Response 1'];
+                $NO_ANSWER = "I hear you, but no anwser";
+                try{
+                    if($answers[0]['Response 1'] == '-'
+                        && $answers[0]['Response 2'] == '-'
+                        && $answers[0]['Response 3'] == '-'){
+                        $answer = $NO_ANSWER;
+                    }
+                }catch(\Exception $e){
+                    $answer = '';
+                }
+
+
+                if(empty($answer)){
+
+                    /**
+                     * SET DEFAULT AT ONE
+                     */
+                    if(!empty($answers[0]['Response 1'])){
+                        $answer = $answers[0]['Response 1'];
+                    }
+
+                    //Play random case
+                    //only get the higher response  $answers[0]
+                    //random one
+                    $x = random_int(1, 3);
+                    $responseX = "Response {$x}";
+                    //some answer return as -
+                    //what the HECK @@, fall back to the 'Response 1'
+                    if(!empty($answers[0][$responseX]) && $answers[0][$responseX] != '-'){
+                        $answer = $answers[0][$responseX];
+                    }
+                }
             }
             //if NO answer found, load random one in default
 //            if(!($answers->count() > 0)){
@@ -104,6 +131,7 @@ class ConversationController extends Controller
                 }
             }
 
+            // Still empty, notify her
             if(empty($answer))
                 $answer = 'Sorry, i miss your context';
 

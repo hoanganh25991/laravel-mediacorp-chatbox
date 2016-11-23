@@ -74,6 +74,8 @@
 @endsection
 
 @section('my_script')
+    <script src="{{ url('js/emojione.min.js') }}"></script>
+    <script src="{{ url('js/singularize.js') }}"></script>
     <script>
         let btnSendMsg = $('#btnSendMsg');
         let userReplyInput = $('input[name="user_text"]');
@@ -95,28 +97,95 @@
 
         function handleMessage(){
             let user_text = userReplyInput.val();
+//            console.log('emojione convert', emojione.toShort(user_reply));
+            let isUserOnlyUseEmoji = function(text){
+                let r = false;
+                let emojiEmoticonPattern = /(:\w+:|<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[:;=]|[:;=B8][\-\^]?[3DOPp@\$\*\\\)\(\/\|])(?=\s|[!\.\?]|$)/g;
+                //Convert ANY NATIVE UNICODE to shortname
+                text = emojione.toShort(text);
+                console.log('text after emojione navtice>shortname convert', text);
+//                if(text.match(emojiEmoticonPattern)){
+//                    console.log('match emoji, emoticon in reply');
+//                    text = text.replace(emojiEmoticonPattern, '');
+//                    console.log('text after replace emoji, emoticon', text);
+//                    r = (text == '');
+//                }
+                while(text.match(emojiEmoticonPattern)){
+                    text = text.replace(emojiEmoticonPattern, '');
+                }
+//                console.log('text after replace ALL match emoji, emoticon', text);
+                console.log('text after replcae ALlL emoji, emoticon');console.log(text);
+                text = text.replace(/s+/g, '');
+                r = (text == '');
+                console.log(r);
+
+                return r;
+            }
+
             let chatbox_name = selectChatbox.val();
 
             //append to conversationDiv
             let userReplyTmp = userReplyTemplate.clone();
             userReplyTmp.find('button').text(user_text);
             conversationDiv.append(userReplyTmp);
+            conversationDiv.scrollTop(10000);
+
             //clear input text
             userReplyInput.val('');
+
+            if(isUserOnlyUseEmoji(user_text)){
+                //Do nothing
+                return
+            }
 
             let chatboxReply = chatboxReplyTemplate.clone();
             conversationDiv.append(chatboxReply);
 
             conversationDiv.scrollTop(10000);
 
+            let transformToSingular = function(text){
+                /**
+                 * This function can use BCS i have injected into global
+                 * check singularize.js
+                 */
+                let textSingleWords = text.split(' ');
+                textSingleWords = textSingleWords.map(function(word){
+                    let singularWord = singularize(word);
+                    let pluralWord = pluralize(singularWord);
+
+                    // I HAVE TO CHECK THIS bcs pluarlize/sigularize may fail
+                    // when fail it manipulate on user_reply WRONG
+                    return pluralWord == word ? singularWord : word;
+                })
+
+                return textSingleWords.join(' ');
+            }
+            /**
+             * Change user type in with plural to singularize
+             * SO DANGER when manipulate on user_reply this way
+             * AAAA
+             */
+            let user_text_origin = user_text;
+            user_text = transformToSingular(user_text);
+            console.log('text after change to singular');console.log(user_text);
+
             $.post({
                 url: '{{ url("script") }}',
                 data: {
+                    user_text,
+                    // bcs i've manipulate on user_reply, let the origin here
+                    user_text_origin,
                     user_text,
                     chatbox_name
                 },
                 success(res){
                     console.log(res);
+
+                    if(res['response'] == 'I hear you, but no anwser'){
+//                        console.log('Listen, but no answer case');
+                        chatboxReply.find('button').remove();
+                        return;
+                    }
 
                     chatboxReply.find('button').text(res['response']);
                     conversationDiv.scrollTop(10000);
