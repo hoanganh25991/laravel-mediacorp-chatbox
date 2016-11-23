@@ -48,6 +48,8 @@ class ConversationController extends Controller
 
             //query on $conversation, get out ANSWER
             $userReply = $req->get('user_text');
+            $userReplyOrigin = $req->get('user_text_origin');
+//            $userReply = "{$userReply} {$userReplyOrigin}";
             //add space into userReply, bcs day? considerd as whole ONE
             //which dif from 'day ?' considered as 'day' and '?'
             //@info php preg_match can solve 'how are you?'
@@ -55,15 +57,25 @@ class ConversationController extends Controller
 //            $arr = explode('?', $userReply);
 //            $userReply = implode(' ?', $arr);
             $userReply = preg_replace("/\.|\.\.|!/", '', $userReply);
+            $userReplyOrigin = preg_replace("/\.|\.\.|!/", '', $userReplyOrigin);
             //find out matched answer in conversation
             $answers = $conversation->filter(function($val) use($userReply){
                 $pattern = $val['Keyword'];
 
                 return preg_match($pattern, $userReply);
             });
+
+            $answers2 = $conversation->filter(function($val) use($userReplyOrigin){
+                $pattern = $val['Keyword'];
+
+                return preg_match($pattern, $userReplyOrigin);
+            });
             //only get the values, store as array, filter make HOLE in array
             //array like object 2=>'asdfasd', 4=>'asdfasdf', bcs 0,1,3 gone
             $answers = $answers->values();
+            $answers2 = $answers2->values();
+
+            $answers = $answers->merge($answers2);
 
             $answer = '';
 

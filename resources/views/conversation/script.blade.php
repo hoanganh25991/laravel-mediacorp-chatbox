@@ -150,12 +150,15 @@
                  */
                 let textSingleWords = text.split(' ');
                 textSingleWords = textSingleWords.map(function(word){
-                    let singularWord = singularize(word);
-                    let pluralWord = pluralize(singularWord);
-
-                    // I HAVE TO CHECK THIS bcs pluarlize/sigularize may fail
-                    // when fail it manipulate on user_reply WRONG
-                    return pluralWord == word ? singularWord : word;
+//                    let singularWord = singularize(word);
+//                    let pluralWord = pluralize(singularWord);
+//
+//                    // I HAVE TO CHECK THIS bcs pluarlize/sigularize may fail
+//                    // when fail it manipulate on user_reply WRONG
+//                    return pluralWord == word ? singularWord : word;
+                    //Simple return sigularize from word
+                    //Serve use BOTH user_reply & user_reply_origin
+                    return singularize(word);
                 })
 
                 return textSingleWords.join(' ');
@@ -172,7 +175,6 @@
             $.post({
                 url: '{{ url("script") }}',
                 data: {
-                    user_text,
                     // bcs i've manipulate on user_reply, let the origin here
                     user_text_origin,
                     user_text,
