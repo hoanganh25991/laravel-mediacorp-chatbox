@@ -11,7 +11,11 @@ trait ApiUtils{
 
         $emojiPattern = '/(:\w+:|<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[:;=]|[:;=B8][\-\^]?[3DOPp@\$\*\\\)\(\/\|])(?=\s|[!\.\?]|$)/';
 
-        return preg_replace($emojiPattern, '', $textEmojiToShortname);
+        while(preg_match($emojiPattern, $textEmojiToShortname)){
+            $textEmojiToShortname = preg_replace($emojiPattern, '', $textEmojiToShortname);
+        }
+
+        return $textEmojiToShortname;
     }
 
     public function transformWordsToSingular($text){
