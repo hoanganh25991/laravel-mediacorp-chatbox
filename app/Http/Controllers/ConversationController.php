@@ -10,10 +10,11 @@ use Validator;
 use App\Traits\ApiResponse;
 use App\Traits\ApiUtils;
 
-class ConversationController extends Controller
-{
+class ConversationController extends Controller {
     use ApiResponse;
     use ApiUtils;
+
+    const NO_ANSWER = "I hear you, but no anwser";
     
     public function script(Request $req){
         //only get out main boyfriend chatbox
@@ -49,16 +50,19 @@ class ConversationController extends Controller
             $conversation = collect($conversation);
 
             //query on $conversation, get out ANSWER
-            $userReply = $req->get('user_text');
+            $userText = $req->get('user_text');
 //            $userReplyOrigin = $req->get('user_text_origin');
-            $userReplyPluralForm = $this->transformWordsToPlural($userReply);
+            $userReplySingularForm = $this->transformWordsToSingular($userText);
             /**
              * Check user only using emoji|emoticon
              */
-            $removeEmojiUserReply = $this->removeEmoji($userReply);
-            $removeEmojiUserReply = $this->removeSpace($removeEmojiUserReply);
-            if(empty($removeEmojiUserReply)){
+//            $removeEmojiUserText = $this->removeEmoji($userText);
+            $removeEmojiUserText = removeEmojiX($userText);
+            $a = $this->removeSpace($removeEmojiUserText);
 
+//            if(empty($this->removeSpace($removeEmojiUserText))){
+            if(empty($a)){
+                return $this->res(['response' => self::NO_ANSWER]);
             }
 //            $userReply = "{$userReply} {$userReplyOrigin}";
             //add space into userReply, bcs day? considerd as whole ONE
@@ -67,13 +71,13 @@ class ConversationController extends Controller
             //no need to modify here
 //            $arr = explode('?', $userReply);
 //            $userReply = implode(' ?', $arr);
-            $userReply = preg_replace('/\.|\.\.|!/', '', $userReply);
+            $userText = preg_replace('/\.|\.\.|!/', '', $userText);
 //            $userReplyOrigin = preg_replace("/\.|\.\.|!/", '', $userReplyOrigin);
             //find out matched answer in conversation
-            $answers = $conversation->filter(function($val) use($userReply){
+            $answers = $conversation->filter(function($val) use($userText){
                 $pattern = $val['Keyword'];
 
-                return preg_match($pattern, $userReply);
+                return preg_match($pattern, $userText);
             });
 
 //            $answers2 = $conversation->filter(function($val) use($userReplyOrigin){
@@ -86,7 +90,7 @@ class ConversationController extends Controller
             $answers = $answers->values();
 //            $answers2 = $answers2->values();
 
-            $answers = $answers->merge($answers2);
+//            $answers = $answers->merge($answers2);
 
             $answer = '';
 
@@ -95,12 +99,13 @@ class ConversationController extends Controller
              * just choose the first one $answer[0]
              */
             if($answers->count() > 0){
-                $NO_ANSWER = "I hear you, but no anwser";
+//                $NO_ANSWER = "I hear you, but no anwser";
                 try{
                     if($answers[0]['Response 1'] == '-'
                         && $answers[0]['Response 2'] == '-'
                         && $answers[0]['Response 3'] == '-'){
-                        $answer = $NO_ANSWER;
+//                        $answer = $NO_ANSWER;
+                        $answer = self::NO_ANSWER;
                     }
                 }catch(\Exception $e){
                     $answer = '';

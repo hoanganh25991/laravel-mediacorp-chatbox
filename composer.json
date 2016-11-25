@@ -8,7 +8,8 @@
         "php": ">=5.6.4",
         "laravel/framework": "5.3.*",
         "psy/psysh": "@stable",
-        "laracasts/flash": "^2.0"
+        "laracasts/flash": "^2.0",
+        "emojione/emojione": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

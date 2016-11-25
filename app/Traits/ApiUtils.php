@@ -1,8 +1,6 @@
 <?php
 namespace App\Traits;
 
-use Inflect;
-
 trait ApiUtils{
     public function removeEmoji($text) {
         // Match Emoticons
@@ -49,12 +47,12 @@ trait ApiUtils{
         return preg_match($all, $str);
     }
 
-    public function transformWordsToPlural($text){
+    public function transformWordsToSingular($text){
         $wordArr = explode(" ", $text);
         
         $newWordArr = [];
         foreach($wordArr as $word){
-            $newWordArr[] = Inflect::pluralize($word);
+            $newWordArr[] = Inflect::singularize($word);
         }
         
         return implode(" ", $newWordArr);

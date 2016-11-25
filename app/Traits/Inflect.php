@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Traits;
 // Thanks to http://www.eval.ca/articles/php-pluralize (MIT license)
 //           http://dev.rubyonrails.org/browser/trunk/activesupport/lib/active_support/inflections.rb (MIT license)
 //           http://www.fortunecity.com/bally/durrus/153/gramch13.html
@@ -27,8 +27,7 @@
 //   Added rule for potato -> potatoes
 //   Added rule for *us -> *uses
 
-class Inflect
-{
+class Inflect {
     static $plural = array(
         '/(quiz)$/i'               => "$1zes",
         '/^(ox)$/i'                => "$1en",
