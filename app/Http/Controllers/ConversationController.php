@@ -8,10 +8,12 @@ use DB;
 use Validator;
 //use \PDO;
 use App\Traits\ApiResponse;
+use App\Traits\ApiUtils;
 
 class ConversationController extends Controller
 {
     use ApiResponse;
+    use ApiUtils;
     
     public function script(Request $req){
         //only get out main boyfriend chatbox
@@ -48,7 +50,16 @@ class ConversationController extends Controller
 
             //query on $conversation, get out ANSWER
             $userReply = $req->get('user_text');
-            $userReplyOrigin = $req->get('user_text_origin');
+//            $userReplyOrigin = $req->get('user_text_origin');
+            $userReplyPluralForm = $this->transformWordsToPlural($userReply);
+            /**
+             * Check user only using emoji|emoticon
+             */
+            $removeEmojiUserReply = $this->removeEmoji($userReply);
+            $removeEmojiUserReply = $this->removeSpace($removeEmojiUserReply);
+            if(empty($removeEmojiUserReply)){
+
+            }
 //            $userReply = "{$userReply} {$userReplyOrigin}";
             //add space into userReply, bcs day? considerd as whole ONE
             //which dif from 'day ?' considered as 'day' and '?'
@@ -56,8 +67,8 @@ class ConversationController extends Controller
             //no need to modify here
 //            $arr = explode('?', $userReply);
 //            $userReply = implode(' ?', $arr);
-            $userReply = preg_replace("/\.|\.\.|!/", '', $userReply);
-            $userReplyOrigin = preg_replace("/\.|\.\.|!/", '', $userReplyOrigin);
+            $userReply = preg_replace('/\.|\.\.|!/', '', $userReply);
+//            $userReplyOrigin = preg_replace("/\.|\.\.|!/", '', $userReplyOrigin);
             //find out matched answer in conversation
             $answers = $conversation->filter(function($val) use($userReply){
                 $pattern = $val['Keyword'];
@@ -65,15 +76,15 @@ class ConversationController extends Controller
                 return preg_match($pattern, $userReply);
             });
 
-            $answers2 = $conversation->filter(function($val) use($userReplyOrigin){
-                $pattern = $val['Keyword'];
-
-                return preg_match($pattern, $userReplyOrigin);
-            });
+//            $answers2 = $conversation->filter(function($val) use($userReplyOrigin){
+//                $pattern = $val['Keyword'];
+//
+//                return preg_match($pattern, $userReplyOrigin);
+//            });
             //only get the values, store as array, filter make HOLE in array
             //array like object 2=>'asdfasd', 4=>'asdfasdf', bcs 0,1,3 gone
             $answers = $answers->values();
-            $answers2 = $answers2->values();
+//            $answers2 = $answers2->values();
 
             $answers = $answers->merge($answers2);
 

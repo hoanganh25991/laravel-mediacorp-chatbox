@@ -61,4 +61,5 @@ $a = preg_match($regexMisc, $clean_text);
 //var_dump($a);
 $b = preg_replace($regexMisc, '', $clean_text);
 //var_dump($b);
-var_dump(checkEmoji($clean_text));
+//var_dump(checkEmoji($clean_text));
+var_dump(removeEmoji("hello ☕ ☕ ☕ ☕ ☕ ☕"));

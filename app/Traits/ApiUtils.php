@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use Inflect;
 
 trait ApiUtils{
     public function removeEmoji($text) {
@@ -46,5 +47,20 @@ trait ApiUtils{
         $all = "/({$regexEmoticons}|{$regexSymbols}|{$regexTransport}|{$regexMisc}|{$regexDingbats})/u";
 
         return preg_match($all, $str);
+    }
+
+    public function transformWordsToPlural($text){
+        $wordArr = explode(" ", $text);
+        
+        $newWordArr = [];
+        foreach($wordArr as $word){
+            $newWordArr[] = Inflect::pluralize($word);
+        }
+        
+        return implode(" ", $newWordArr);
+    }
+    
+    public function removeSpace($text){
+        return preg_replace('/\s+/', '',$text);
     }
 }
