@@ -57,11 +57,8 @@ class ConversationController extends Controller {
              * Check user only using emoji|emoticon
              */
 //            $removeEmojiUserText = $this->removeEmoji($userText);
-            $removeEmojiUserText = removeEmojiX($userText);
-            $a = $this->removeSpace($removeEmojiUserText);
-
-//            if(empty($this->removeSpace($removeEmojiUserText))){
-            if(empty($a)){
+            $removeEmojiUserText = $this->removeEmoji($userText);
+            if(empty($this->removeSpace($removeEmojiUserText))){
                 return $this->res(['response' => self::NO_ANSWER]);
             }
 //            $userReply = "{$userReply} {$userReplyOrigin}";
