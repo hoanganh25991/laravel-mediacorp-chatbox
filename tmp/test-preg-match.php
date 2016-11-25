@@ -156,14 +156,14 @@ foreach ($strs as $str) {
 //		echo "pattern not in {$str}\n";
 //	}
 
-	$pattern= "/(?=.*(^(\byour day\b)|(\byour day\b)$))(?=.*((?)$))/i";
-//	$pattern= "/(?=.*(^(\byour day\b)|(\byour day\b)$))(?=.*(()$))/i";
-	echo "try pattern: ";
-	if(preg_match($pattern, $str)){
-		echo "pattern in {$str}\n";
-	}else{
-		echo "pattern not in {$str}\n";
-	}
+//	$pattern= "/(?=.*(^(\byour day\b)|(\byour day\b)$))(?=.*((?)$))/i";
+////	$pattern= "/(?=.*(^(\byour day\b)|(\byour day\b)$))(?=.*(()$))/i";
+//	echo "try pattern: ";
+//	if(preg_match($pattern, $str)){
+//		echo "pattern in {$str}\n";
+//	}else{
+//		echo "pattern not in {$str}\n";
+//	}
 
 }
 
@@ -173,6 +173,7 @@ foreach($userReplys as $userReply){
 	$a = preg_replace("/\.|\.\.|!/", '', $userReply);
 	echo $a . "\n";
 }
+
 
 
 
