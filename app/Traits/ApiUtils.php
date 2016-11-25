@@ -28,4 +28,8 @@ trait ApiUtils{
     public function removeSpace($text){
         return preg_replace('/\s+/', '',$text);
     }
+    
+    public function removeSomeSC($text){
+        return preg_replace('/\.|\.\.|!/', '', $text);
+    }
 }

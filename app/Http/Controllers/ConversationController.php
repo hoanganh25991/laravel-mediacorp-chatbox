@@ -52,7 +52,7 @@ class ConversationController extends Controller {
             //query on $conversation, get out ANSWER
             $userText = $req->get('user_text');
 //            $userReplyOrigin = $req->get('user_text_origin');
-            $userReplySingularForm = $this->transformWordsToSingular($userText);
+
             /**
              * Check user only using emoji|emoticon
              */
@@ -68,7 +68,8 @@ class ConversationController extends Controller {
             //no need to modify here
 //            $arr = explode('?', $userReply);
 //            $userReply = implode(' ?', $arr);
-            $userText = preg_replace('/\.|\.\.|!/', '', $userText);
+            $userText = $this->removeSomeSC($userText);
+            $userReplySingularForm = $this->transformWordsToSingular($userText);
 //            $userReplyOrigin = preg_replace("/\.|\.\.|!/", '', $userReplyOrigin);
             //find out matched answer in conversation
             $answers = $conversation->filter(function($val) use($userText){
@@ -77,17 +78,17 @@ class ConversationController extends Controller {
                 return preg_match($pattern, $userText);
             });
 
-//            $answers2 = $conversation->filter(function($val) use($userReplyOrigin){
-//                $pattern = $val['Keyword'];
-//
-//                return preg_match($pattern, $userReplyOrigin);
-//            });
+            $answers2 = $conversation->filter(function($val) use($userReplySingularForm){
+                $pattern = $val['Keyword'];
+
+                return preg_match($pattern, $userReplySingularForm);
+            });
             //only get the values, store as array, filter make HOLE in array
             //array like object 2=>'asdfasd', 4=>'asdfasdf', bcs 0,1,3 gone
             $answers = $answers->values();
-//            $answers2 = $answers2->values();
+            $answers2 = $answers2->values();
 
-//            $answers = $answers->merge($answers2);
+            $answers = $answers->merge($answers2);
 
             $answer = '';
 
