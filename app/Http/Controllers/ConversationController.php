@@ -78,7 +78,7 @@ class ConversationController extends Controller {
                 // After filter, array has "HOLE", just get values as array
                 ->values();
 
-        $answersUserTextSingularForm = 
+        $answersUserTextSingularForm =
             $conversation
                 ->filter(function($val) use($userTextSingularForm){
                     $pattern = $val['Keyword'];
