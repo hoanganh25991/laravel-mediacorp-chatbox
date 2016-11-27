@@ -10,7 +10,6 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -38,4 +37,11 @@ Route::group([
         Route::get('script', 'ConversationController@script');
         Route::post('script', 'ConversationController@script');
     });
+});
+
+/**
+ * Report error test
+ */
+Route::get('error/rollbar', function(){
+    \Log::debug("Debug test with rollbar");
 });

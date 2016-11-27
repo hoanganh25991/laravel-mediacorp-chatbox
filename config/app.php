@@ -180,6 +180,8 @@ return [
 
         Laracasts\Flash\FlashServiceProvider::class,
 
+        Jenssegers\Rollbar\RollbarServiceProvider::class
+
     ],
 
     /*
