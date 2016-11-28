@@ -43,5 +43,6 @@ Route::group([
  * Report error test
  */
 Route::get('error/rollbar', function(){
-    \Log::debug("Debug test with rollbar");
+    \Log::error("Debug test with rollbar");
+    return "Test debug-trace rollbar";
 });
