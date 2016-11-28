@@ -137,16 +137,19 @@ class ConversationController extends Controller {
                 /**
                  * When res 1, 2, 3 == '-', "NO_ANSWER"
                  */
-                if($answer1['Response 1'] == '-'
-                    && $answer1['Response 2'] == '-'
-                    && $answer1['Response 3'] == '-')
-                {
-                    return self::NO_ANSWER;
-                }
+//                if($answer1['Response 1'] == '-'
+//                    && $answer1['Response 2'] == '-'
+//                    && $answer1['Response 3'] == '-')
+//                {
+//                    return self::NO_ANSWER;
+//                }
 
                 // Play random
                 $x = random_int(1, 3);
                 $responseX = "Response {$x}";
+
+                if($answer1[$responseX] == '-')
+                    return self::NO_ANSWER;
 
                 return $answer1[$responseX];
             }catch(\Exception $e){
