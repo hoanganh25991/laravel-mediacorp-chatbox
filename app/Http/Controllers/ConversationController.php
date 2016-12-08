@@ -43,6 +43,10 @@ class ConversationController extends Controller {
 
         $chatboxId = $req->get('chatbox_id');
         $chatboxNames = $conversations->pluck('name');
+        if(empty($chatboxNames[$chatboxId])){
+            $msg = 'chatbox_id wrong';
+            return $this->res($req->all(), $msg, 422);
+        }
         $conversation = $conversations->where('name', $chatboxNames[$chatboxId])->first();
 //        $conversation = $conversations->where('name', $chatboxName)->first();
         if(empty($conversation)){
