@@ -33,7 +33,7 @@ class ConversationController extends Controller {
          * Handle NOT GET, implicit for POST
          */
         $validator = Validator::make($req->all(), [
-            'chatbox_name' => 'required',
+            'chatbox_id' => 'required',
             'user_text' => 'required'
         ]);
 
@@ -41,9 +41,9 @@ class ConversationController extends Controller {
             return $this->res($req->all(), $validator->messages(), 422);
         }
 
-        $chatboxName = $req->get('chatbox_name');
+        $chatboxId = $req->get('chatbox_id');
         $chatboxNames = $conversations->pluck('name');
-        $conversation = $conversations->where('name', $chatboxNames[$chatboxName])->first();
+        $conversation = $conversations->where('name', $chatboxNames[$chatboxId])->first();
 //        $conversation = $conversations->where('name', $chatboxName)->first();
         if(empty($conversation)){
             $msg = 'I\'m sorry. But, no chatbox added. Ask admin for help.';
@@ -98,7 +98,7 @@ class ConversationController extends Controller {
          * Try on fallback of boyfriend default
          */
         if(empty($answer)){
-            $tmp = explode('.', $chatboxName);
+            $tmp = explode('.', $chatboxId);
             $chatboxNameWithoutExt = $tmp[0];
             $pattern = "%{$chatboxNameWithoutExt}%default%";
             $defaultConversation = Conversation::where('name', 'like', $pattern)->first();
