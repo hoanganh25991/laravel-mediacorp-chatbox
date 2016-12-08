@@ -14,7 +14,7 @@ class ConversationController extends Controller {
 
     const NO_ANSWER = "I hear you, but no anwser";
     const MIS_CONTEXT = "Sorry, i miss your context";
-    
+
     public function script(Request $req){
         /**
          * 1. Only get out main boyfriend chatbox

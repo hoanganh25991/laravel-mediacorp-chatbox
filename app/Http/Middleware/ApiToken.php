@@ -17,7 +17,8 @@ class ApiToken
      */
     public function handle($request, Closure $next)
     {
-        if(!$this->isTokenMatched($request->get('token'))){
+        if(!$this->isTokenMatched($request->get('token'))
+        && !$this->isTokenMatched($request->header('token'))){
             return $this->res($request->all(), 'Please submit api token', 403);
         }
 

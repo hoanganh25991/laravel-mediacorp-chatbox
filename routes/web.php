@@ -36,9 +36,10 @@ Route::group([
     Route::group(['middleware' => 'token'], function(){
         Route::get('script', 'ConversationController@script');
         Route::post('script', 'ConversationController@script');
+        Route::get('term-condition', 'ConversationController@termCondition');
     });
 
-    Route::get('term-condition', 'ConversationController@termCondition');
+//    Route::get('term-condition', 'ConversationController@termCondition');
 });
 
 /**
