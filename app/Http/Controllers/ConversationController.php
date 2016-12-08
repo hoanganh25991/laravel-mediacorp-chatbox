@@ -42,7 +42,9 @@ class ConversationController extends Controller {
         }
 
         $chatboxName = $req->get('chatbox_name');
-        $conversation = $conversations->where('name', $chatboxName)->first();
+        $chatboxNames = $conversations->pluck('name');
+        $conversation = $conversations->where('name', $chatboxNames[$chatboxName])->first();
+//        $conversation = $conversations->where('name', $chatboxName)->first();
         if(empty($conversation)){
             $msg = 'I\'m sorry. But, no chatbox added. Ask admin for help.';
             return $this->res($req->all(), $msg, 422);

@@ -80,10 +80,9 @@ Mediacorp does not promise that it will always update the app so that it is rele
  
 We may also wish to stop providing the app, and may terminate use of it at any time without giving notice of termination to you. Unless we tell you otherwise, upon any termination, (a) the rights and licenses granted to you in these terms will end; (b) you must stop using the app, and (if needed) delete it from your device.";
 
-        $conversations = Conversation::where('name', 'not like', '%default%')->get();
-        $chatbox_names = $conversations->pluck('name')->toArray();
+//        $conversations = Conversation::where('name', 'not like', '%default%')->get();
         
-        return $this->res(compact('token', 'term_condition', 'chatbox_names'));
+        return $this->res(compact('token', 'term_condition'));
     }
 
     public function update(Request $req){
