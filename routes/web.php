@@ -37,6 +37,8 @@ Route::group([
         Route::get('script', 'ConversationController@script');
         Route::post('script', 'ConversationController@script');
     });
+
+    Route::get('term-condition', 'ConversationController@termCondition');
 });
 
 /**
