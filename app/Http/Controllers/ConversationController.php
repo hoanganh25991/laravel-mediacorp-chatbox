@@ -47,6 +47,7 @@ class ConversationController extends Controller {
             $msg = 'chatbox_id wrong';
             return $this->res($req->all(), $msg, 422);
         }
+        $chatboxName = $chatboxNames[$chatboxId];
         $conversation = $conversations->where('name', $chatboxNames[$chatboxId])->first();
 //        $conversation = $conversations->where('name', $chatboxName)->first();
         if(empty($conversation)){
@@ -102,7 +103,7 @@ class ConversationController extends Controller {
          * Try on fallback of boyfriend default
          */
         if(empty($answer)){
-            $tmp = explode('.', $chatboxId);
+            $tmp = explode('.', $chatboxName);
             $chatboxNameWithoutExt = $tmp[0];
             $pattern = "%{$chatboxNameWithoutExt}%default%";
             $defaultConversation = Conversation::where('name', 'like', $pattern)->first();
