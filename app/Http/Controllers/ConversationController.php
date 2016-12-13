@@ -14,6 +14,12 @@ class ConversationController extends Controller {
 
     const NO_ANSWER = "I hear you, but no anwser";
     const MIS_CONTEXT = "Sorry, i miss your context";
+    const CHATBOX_MAP = [
+        "2" => "boyfriend1.xlsx",
+        "1" => "boyfriend2.xlsx",
+        "0" => "boyfriend4.xlsx",
+        "3" => "boyfriend3.xlsx"
+    ];
 
     public function script(Request $req){
         /**
@@ -42,7 +48,8 @@ class ConversationController extends Controller {
         }
 
         $chatboxId = $req->get('chatbox_id');
-        $chatboxNames = $conversations->pluck('name');
+//        $chatboxNames = $conversations->pluck('name');
+        $chatboxNames = self::CHATBOX_MAP;
         if(empty($chatboxNames[$chatboxId])){
             $msg = 'chatbox_id wrong';
             return $this->res($req->all(), $msg, 422);
