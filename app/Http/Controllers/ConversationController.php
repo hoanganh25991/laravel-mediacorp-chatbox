@@ -14,11 +14,16 @@ class ConversationController extends Controller {
 
     const NO_ANSWER = "I hear you, but no anwser";
     const MIS_CONTEXT = "Sorry, i miss your context";
+    // boyfriend1 is the 3rd boyfriend (The Sunshine Boy) in the app
+    // boyfriend 2 is 2nd bofriend (The Pracitcal One) in the app
+    // boyfriend3 is last boyfriend (the sweet guy) in the app
+    // boyfriend4 is actually the first boyfriend in the app (The devoted introvert)
     const CHATBOX_MAP = [
         "2" => "boyfriend1.xlsx",
         "1" => "boyfriend2.xlsx",
         "0" => "boyfriend4.xlsx",
-        "3" => "boyfriend3.xlsx"
+        "3" => "boyfriend3.xlsx",
+        "99" => "image.xlsx"
     ];
 
     public function script(Request $req){
@@ -133,7 +138,18 @@ class ConversationController extends Controller {
         if(empty($answer))
             $answer = self::MIS_CONTEXT;
 
-        return response(['response' => $answer], 200, ['Content-Type' => 'application/json']);
+        /**
+         * Decide answer type
+         */
+        $answerType = 'text';
+        $filePath = storage_path('app/photos/' . $answer);
+        $fileInfo = @getimagesize($filePath);
+        if(!empty($fileInfo) && strpos($fileInfo['mime'], 'image') !== false){
+            $answerType = 'image';
+            $answer = url('photos/' . $answer);
+        }
+
+        return response(['response' => $answer, 'type' => $answerType], 200, ['Content-Type' => 'application/json']);
     }
 
     private function getMostRelevanceAnswer($answers){
