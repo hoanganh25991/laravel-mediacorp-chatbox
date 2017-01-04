@@ -45,7 +45,8 @@ class ConversationController extends Controller {
          */
         $validator = Validator::make($req->all(), [
             'chatbox_id' => 'required',
-            'user_text' => 'required'
+            'user_text' => 'required',
+            'device_id' => 'required'
         ]);
 
         if($validator->fails()){
@@ -82,6 +83,8 @@ class ConversationController extends Controller {
         if(empty($this->removeSpace($removeEmojiUserText))){
             return $this->res(['response' => self::NO_ANSWER]);
         }
+        //store userText origin for log
+        $userTextOrigin = $userText;
         // Remove some special character
         $userText = $this->removeSomeSC($userText);
         // Support singular form, when user type in plural
@@ -137,6 +140,11 @@ class ConversationController extends Controller {
          */
         if(empty($answer))
             $answer = self::MIS_CONTEXT;
+
+        /**
+         * Build log file
+         */
+        $this->buildLog($req->get('device_id'), $chatboxId, $userTextOrigin, $answer);
 
         /**
          * Decide answer type
@@ -213,5 +221,16 @@ Mediacorp does not promise that it will always update the app so that it is rele
  
 We may also wish to stop providing the app, and may terminate use of it at any time without giving notice of termination to you. Unless we tell you otherwise, upon any termination, (a) the rights and licenses granted to you in these terms will end; (b) you must stop using the app, and (if needed) delete it from your device.";
         return response(['term_condition' => $termCondition], 200, ['Content-Type' => 'application/json']);;
+    }
+
+    private function buildLog($device_id, $boyfriend_id, $user_message, $boyfriend_response){
+//        device_id,boyfriend_id,user_message,boyfriend_response, timestamp
+        $logName = base_path('user-response.log');
+        $logFile = fopen($logName, 'a');
+
+        $timestamp = time();
+        $content = json_encode(compact('device_id', 'boyfriend_id', 'user_message', 'boyfriend_response', 'timestamp')) . "\n";
+        fwrite($logFile, $content);
+        fclose($logFile);
     }
 }
