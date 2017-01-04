@@ -144,7 +144,8 @@ class ConversationController extends Controller {
         /**
          * Build log file
          */
-        $this->buildLog($req->get('device_id'), $chatboxId, $userTextOrigin, $answer);
+//        $this->buildLog($req->get('device_id'), $chatboxId, $userTextOrigin, $answer);
+        $this->buildCSVLog($req->get('device_id'), $chatboxId, $userTextOrigin, $answer);
 
         /**
          * Decide answer type
@@ -231,6 +232,17 @@ We may also wish to stop providing the app, and may terminate use of it at any t
         $timestamp = time();
         $content = json_encode(compact('device_id', 'boyfriend_id', 'user_message', 'boyfriend_response', 'timestamp')) . "\n";
         fwrite($logFile, $content);
+        fclose($logFile);
+    }
+
+    private function buildCSVLog($device_id, $boyfriend_id, $user_message, $boyfriend_response){
+        $logName = base_path('user-response.csv');
+
+        $logFile = fopen($logName, 'a');
+
+        $timestamp = time();
+        fputcsv($logFile, compact('device_id', 'boyfriend_id', 'user_message', 'boyfriend_response', 'timestamp'));
+
         fclose($logFile);
     }
 }

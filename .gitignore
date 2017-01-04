@@ -8,3 +8,4 @@ Homestead.yaml
 .env
 /definition-back-up
 /user-response.log
+/user-response.csv
