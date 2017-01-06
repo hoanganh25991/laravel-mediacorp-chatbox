@@ -191,7 +191,17 @@ class ConversationController extends Controller {
 //                }
 
                 // Play random
-                $x = random_int(1, 3);
+//                $answer1 format 
+//                [
+//                    'Keyword' => 'adasd',
+//                    'Response 1' => 'asda',
+//                    'Resoibse 2' => 'asdfasd',
+//                    //if missing Response 3, no thing here
+//                ]
+                // So that, just random to the max of answer
+                // (Implicit has 3 means has 2, 1, has 2 means has 1)
+                $numOfRes = count($answer1) - 1; //remove Keyword
+                $x = random_int(1, $numOfRes);
                 $responseX = "Response {$x}";
 
                 if($answer1[$responseX] == '-')
