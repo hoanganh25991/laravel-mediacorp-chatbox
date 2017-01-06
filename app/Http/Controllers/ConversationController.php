@@ -151,6 +151,13 @@ class ConversationController extends Controller {
          * Decide answer type
          */
         $answerType = 'text';
+        /**
+         * Because image note as 'image:abc.png'
+         * > have to remove 'image:'
+         */
+        if(strpos($answer, "image:") === 0){
+            $answer = substr($answer, 6);
+        }
         $filePath = storage_path('app/photos/' . $answer);
         $fileInfo = @getimagesize($filePath);
         if(!empty($fileInfo) && strpos($fileInfo['mime'], 'image') !== false){
