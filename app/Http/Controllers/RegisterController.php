@@ -81,8 +81,9 @@ Mediacorp does not promise that it will always update the app so that it is rele
 We may also wish to stop providing the app, and may terminate use of it at any time without giving notice of termination to you. Unless we tell you otherwise, upon any termination, (a) the rights and licenses granted to you in these terms will end; (b) you must stop using the app, and (if needed) delete it from your device.";
 
 //        $conversations = Conversation::where('name', 'not like', '%default%')->get();
+       $facebook_link = ' https://www.facebook.com/ch8sg';
         
-        return $this->res(compact('token', 'term_condition'));
+        return $this->res(compact('token', 'term_condition', 'facebook_link'));
     }
 
     public function update(Request $req){
