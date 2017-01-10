@@ -24,6 +24,8 @@ Route::post('excel/load', 'ExcelController@load');
 Route::get('script', 'ConversationController@script');
 Route::post('script', 'ConversationController@script');
 
+Route::get('script/check-image-exist', 'ConversationController@checkImageExist');
+
 Route::group([
     'prefix' => 'api'
 ], function(){
